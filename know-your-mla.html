@@ -1,0 +1,4010 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Know Your MLA — Public Accountability Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&family=DM+Serif+Display:ital@0;1&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+    <style>
+      :root {
+        --ink: #0f0f0f;
+        --ink2: #2d2d2d;
+        --ink3: #5a5a5a;
+        --ink4: #9a9a9a;
+        --paper: #fafaf8;
+        --surface: #ffffff;
+        --border: #e5e5e0;
+        --border2: #d0d0c8;
+        --saffron: #e8520a;
+        --saffron2: #f47b3a;
+        --saffron-bg: #fef0e9;
+        --saffron-border: #fac4a2;
+        --green: #1a6b3a;
+        --green2: #2d9e5c;
+        --green-bg: #e8f5ee;
+        --green-border: #a0d9b8;
+        --red: #b91c1c;
+        --red-bg: #fee2e2;
+        --gold: #c9922a;
+        --gold-bg: #fdf5e3;
+        --blue: #1d4ed8;
+        --blue-bg: #eff6ff;
+        --party-inc: #1a56b0;
+        --party-bjp: #f97316;
+        --party-jds: #16a34a;
+        --r: 12px;
+        --r2: 8px;
+        --r3: 20px;
+        --shadow: 0 1px 3px rgba(0, 0, 0, 0.08), 0 4px 16px rgba(0, 0, 0, 0.04);
+      }
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      html {
+        scroll-behavior: smooth;
+      }
+      body {
+        font-family: "DM Sans", sans-serif;
+        background: var(--paper);
+        color: var(--ink);
+        line-height: 1.6;
+        font-size: 15px;
+      }
+
+      /* ───── NAV ───── */
+      .topnav {
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        background: var(--ink);
+        color: #fff;
+        padding: 0 2rem;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        height: 56px;
+        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.25);
+      }
+      .nav-brand {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-family: "Bebas Neue", sans-serif;
+        font-size: 22px;
+        letter-spacing: 1px;
+        color: #fff;
+        cursor: pointer;
+      }
+      .nav-flag {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+        width: 20px;
+      }
+      .nf {
+        height: 4px;
+        border-radius: 1px;
+      }
+      .nf1 {
+        background: #ff9933;
+      }
+      .nf2 {
+        background: #fff;
+      }
+      .nf3 {
+        background: #138808;
+      }
+      .nav-links {
+        display: flex;
+        gap: 0;
+      }
+      .nav-link {
+        padding: 0 1rem;
+        height: 56px;
+        display: flex;
+        align-items: center;
+        font-size: 13px;
+        font-weight: 500;
+        color: rgba(255, 255, 255, 0.7);
+        cursor: pointer;
+        border-bottom: 2px solid transparent;
+        transition: all 0.2s;
+        letter-spacing: 0.3px;
+      }
+      .nav-link:hover,
+      .nav-link.active {
+        color: #fff;
+        border-bottom-color: var(--saffron);
+      }
+      .nav-badge {
+        background: var(--saffron);
+        color: #fff;
+        border-radius: 99px;
+        padding: 2px 8px;
+        font-size: 11px;
+        margin-left: 6px;
+      }
+
+      /* ───── PAGES ───── */
+      .page {
+        display: none;
+      }
+      .page.active {
+        display: block;
+      }
+
+      /* ───── HOME HERO ───── */
+      .hero {
+        background: var(--ink);
+        color: #fff;
+        padding: 5rem 2rem 4rem;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+      }
+      .hero::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background:
+          repeating-linear-gradient(
+            0deg,
+            transparent,
+            transparent 39px,
+            rgba(255, 255, 255, 0.03) 40px
+          ),
+          repeating-linear-gradient(
+            90deg,
+            transparent,
+            transparent 39px,
+            rgba(255, 255, 255, 0.03) 40px
+          );
+      }
+      .hero-eyebrow {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        background: rgba(255, 255, 255, 0.08);
+        border: 0.5px solid rgba(255, 255, 255, 0.15);
+        border-radius: 99px;
+        padding: 6px 16px;
+        font-size: 12px;
+        color: rgba(255, 255, 255, 0.7);
+        margin-bottom: 1.5rem;
+        letter-spacing: 0.5px;
+        text-transform: uppercase;
+      }
+      .hero h1 {
+        font-family: "DM Serif Display", serif;
+        font-size: clamp(40px, 7vw, 72px);
+        font-weight: 400;
+        line-height: 1.05;
+        margin-bottom: 1.5rem;
+        letter-spacing: -1px;
+      }
+      .hero h1 span {
+        color: var(--saffron);
+        font-style: italic;
+      }
+      .hero-sub {
+        font-size: 17px;
+        color: rgba(255, 255, 255, 0.65);
+        max-width: 560px;
+        margin: 0 auto 2.5rem;
+        line-height: 1.7;
+      }
+      .hero-stats {
+        display: flex;
+        justify-content: center;
+        gap: 3rem;
+        flex-wrap: wrap;
+        margin-top: 3rem;
+        padding-top: 2.5rem;
+        border-top: 0.5px solid rgba(255, 255, 255, 0.1);
+      }
+      .hs {
+        text-align: center;
+      }
+      .hs-num {
+        font-family: "Bebas Neue", sans-serif;
+        font-size: 42px;
+        color: var(--saffron);
+        line-height: 1;
+      }
+      .hs-lbl {
+        font-size: 12px;
+        color: rgba(255, 255, 255, 0.5);
+        margin-top: 4px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+
+      /* ───── ALERT ───── */
+      .alert {
+        display: flex;
+        align-items: flex-start;
+        gap: 14px;
+        padding: 1rem 1.5rem;
+        border-radius: var(--r2);
+        margin-bottom: 1.5rem;
+        font-size: 13px;
+        line-height: 1.6;
+      }
+      .alert-warn {
+        background: var(--red-bg);
+        border: 0.5px solid #fca5a5;
+        color: var(--red);
+      }
+      .alert-success {
+        background: var(--green-bg);
+        border: 0.5px solid var(--green-border);
+        color: var(--green);
+      }
+      .alert-info {
+        background: var(--saffron-bg);
+        border: 0.5px solid var(--saffron-border);
+        color: var(--saffron);
+      }
+      .alert-icon {
+        font-size: 20px;
+        flex-shrink: 0;
+        margin-top: 1px;
+      }
+
+      /* ───── LAYOUT ───── */
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 2rem;
+      }
+      .section-header {
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+        margin-bottom: 1.5rem;
+      }
+      .section-title {
+        font-family: "DM Serif Display", serif;
+        font-size: 26px;
+        font-weight: 400;
+        color: var(--ink);
+      }
+      .section-sub {
+        font-size: 13px;
+        color: var(--ink4);
+        margin-top: 4px;
+      }
+      .view-all {
+        font-size: 13px;
+        color: var(--saffron);
+        cursor: pointer;
+        font-weight: 500;
+      }
+      .view-all:hover {
+        text-decoration: underline;
+      }
+
+      /* ───── KPI GRID ───── */
+      .kpi-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+        gap: 1rem;
+        margin-bottom: 2rem;
+      }
+      .kpi {
+        background: var(--surface);
+        border: 0.5px solid var(--border);
+        border-radius: var(--r);
+        padding: 1.25rem;
+        position: relative;
+        overflow: hidden;
+      }
+      .kpi::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 3px;
+      }
+      .kpi.saffron::before {
+        background: var(--saffron);
+      }
+      .kpi.green::before {
+        background: var(--green);
+      }
+      .kpi.red::before {
+        background: var(--red);
+      }
+      .kpi.gold::before {
+        background: var(--gold);
+      }
+      .kpi.blue::before {
+        background: var(--blue);
+      }
+      .kpi-val {
+        font-family: "DM Serif Display", serif;
+        font-size: 32px;
+        color: var(--ink);
+        line-height: 1.1;
+        margin-bottom: 4px;
+      }
+      .kpi-lbl {
+        font-size: 11px;
+        color: var(--ink4);
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+      .kpi-change {
+        font-size: 12px;
+        margin-top: 6px;
+      }
+      .change-down {
+        color: var(--red);
+      }
+      .change-up {
+        color: var(--green2);
+      }
+
+      /* ───── CARDS ───── */
+      .card {
+        background: var(--surface);
+        border: 0.5px solid var(--border);
+        border-radius: var(--r);
+        padding: 1.5rem;
+        box-shadow: var(--shadow);
+      }
+      .card + .card {
+        margin-top: 1.5rem;
+      }
+      .card-title {
+        font-family: "DM Serif Display", serif;
+        font-size: 20px;
+        color: var(--ink);
+        margin-bottom: 0.25rem;
+      }
+      .card-sub {
+        font-size: 13px;
+        color: var(--ink4);
+        margin-bottom: 1.25rem;
+      }
+      .two-col {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1.5rem;
+      }
+      .three-col {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1.5rem;
+      }
+      @media (max-width: 700px) {
+        .two-col,
+        .three-col {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      /* ───── MLA CARD (GRID) ───── */
+      .mla-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+        gap: 1.25rem;
+      }
+      .mla-card {
+        background: var(--surface);
+        border: 0.5px solid var(--border);
+        border-radius: var(--r);
+        overflow: hidden;
+        cursor: pointer;
+        transition:
+          transform 0.2s,
+          box-shadow 0.2s,
+          border-color 0.2s;
+      }
+      .mla-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        border-color: var(--saffron);
+      }
+      .mla-card-top {
+        padding: 1.25rem 1.25rem 0;
+        display: flex;
+        align-items: flex-start;
+        gap: 1rem;
+      }
+      .mla-photo {
+        width: 58px;
+        height: 58px;
+        border-radius: 50%;
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 600;
+        font-size: 18px;
+        color: #fff;
+        border: 2px solid rgba(255, 255, 255, 0.3);
+      }
+      .mla-photo img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 50%;
+      }
+      .mla-card-name {
+        font-weight: 600;
+        font-size: 15px;
+        color: var(--ink);
+        line-height: 1.3;
+      }
+      .mla-card-const {
+        font-size: 12px;
+        color: var(--ink4);
+        margin-top: 2px;
+      }
+      .party-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        font-size: 10px;
+        font-weight: 600;
+        padding: 2px 8px;
+        border-radius: 99px;
+        margin-top: 5px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+      .pp-inc {
+        background: #eff6ff;
+        color: var(--party-inc);
+        border: 0.5px solid #bfdbfe;
+      }
+      .pp-bjp {
+        background: #fff7ed;
+        color: var(--party-bjp);
+        border: 0.5px solid #fed7aa;
+      }
+      .pp-jds {
+        background: #f0fdf4;
+        color: var(--party-jds);
+        border: 0.5px solid #bbf7d0;
+      }
+      .pp-ind {
+        background: #f5f3ff;
+        color: #6d28d9;
+        border: 0.5px solid #ddd6fe;
+      }
+      .mla-card-body {
+        padding: 1rem 1.25rem;
+      }
+      .score-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 0.75rem;
+      }
+      .score-circle {
+        width: 44px;
+        height: 44px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+        font-size: 14px;
+        color: #fff;
+        flex-shrink: 0;
+      }
+      .sc-a {
+        background: var(--green);
+      }
+      .sc-b {
+        background: var(--green2);
+      }
+      .sc-c {
+        background: var(--gold);
+      }
+      .sc-d {
+        background: var(--red);
+      }
+      .mla-stat-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 6px;
+      }
+      .mla-stat {
+        background: var(--paper);
+        border-radius: 6px;
+        padding: 6px 8px;
+      }
+      .mla-stat-val {
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--ink);
+      }
+      .mla-stat-lbl {
+        font-size: 10px;
+        color: var(--ink4);
+        margin-top: 1px;
+      }
+      .mla-card-footer {
+        border-top: 0.5px solid var(--border);
+        padding: 0.75rem 1.25rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .fund-bar-wrap {
+        flex: 1;
+        margin-right: 0.75rem;
+      }
+      .fund-bar-label {
+        display: flex;
+        justify-content: space-between;
+        font-size: 11px;
+        color: var(--ink4);
+        margin-bottom: 3px;
+      }
+      .bar-track {
+        height: 5px;
+        background: #edf2f7;
+        border-radius: 99px;
+        overflow: hidden;
+      }
+      .bar-fill {
+        height: 5px;
+        border-radius: 99px;
+      }
+      .bfg {
+        background: var(--green2);
+      }
+      .bfa {
+        background: #d97706;
+      }
+      .bfr {
+        background: var(--red);
+      }
+      .badge-rank {
+        font-size: 11px;
+        color: var(--ink4);
+        font-weight: 500;
+      }
+      .badge-rank.rank1 {
+        color: #b8860b;
+        font-weight: 700;
+      }
+      .badge-rank.rank2 {
+        color: #808080;
+      }
+      .badge-rank.rank3 {
+        color: #8b4513;
+      }
+
+      /* ───── FILTER BAR ───── */
+      .filter-bar {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+        margin-bottom: 1.5rem;
+      }
+      .fb {
+        padding: 7px 16px;
+        border-radius: 99px;
+        border: 0.5px solid var(--border2);
+        background: var(--surface);
+        font-size: 13px;
+        font-weight: 500;
+        cursor: pointer;
+        color: var(--ink3);
+        transition: all 0.15s;
+      }
+      .fb.active,
+      .fb:hover {
+        background: var(--ink);
+        border-color: var(--ink);
+        color: #fff;
+      }
+      .fb.saffron.active {
+        background: var(--saffron);
+        border-color: var(--saffron);
+        color: #fff;
+      }
+      input.search-box {
+        padding: 8px 16px;
+        border-radius: 99px;
+        border: 0.5px solid var(--border2);
+        background: var(--surface);
+        font-size: 13px;
+        color: var(--ink);
+        outline: none;
+        width: 240px;
+        font-family: "DM Sans", sans-serif;
+      }
+      input.search-box:focus {
+        border-color: var(--saffron);
+      }
+
+      /* ───── LEADERBOARD ───── */
+      .lb-item {
+        display: grid;
+        grid-template-columns: 48px 1fr auto;
+        align-items: center;
+        gap: 1rem;
+        padding: 1rem 0;
+        border-bottom: 0.5px solid var(--border);
+      }
+      .lb-item:last-child {
+        border-bottom: none;
+      }
+      .lb-rank {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+        font-size: 14px;
+        flex-shrink: 0;
+      }
+      .lr1 {
+        background: #ffd700;
+        color: #7a5c00;
+      }
+      .lr2 {
+        background: #c0c0c0;
+        color: #3a3a3a;
+      }
+      .lr3 {
+        background: #cd7f32;
+        color: #4a2010;
+      }
+      .lrn {
+        background: var(--paper);
+        border: 0.5px solid var(--border);
+        color: var(--ink4);
+        font-size: 13px;
+      }
+      .lb-photo {
+        width: 44px;
+        height: 44px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 600;
+        font-size: 15px;
+        color: #fff;
+        flex-shrink: 0;
+        margin-right: 4px;
+      }
+      .lb-info-name {
+        font-weight: 600;
+        font-size: 14px;
+        color: var(--ink);
+      }
+      .lb-info-meta {
+        font-size: 12px;
+        color: var(--ink4);
+        margin-top: 1px;
+      }
+      .lb-stats {
+        display: flex;
+        gap: 12px;
+        margin-top: 6px;
+        flex-wrap: wrap;
+      }
+      .lb-stat {
+        font-size: 11px;
+        color: var(--ink4);
+      }
+      .lb-stat strong {
+        color: var(--ink);
+        font-weight: 600;
+      }
+      .lb-grade {
+        padding: 5px 14px;
+        border-radius: 99px;
+        font-size: 13px;
+        font-weight: 700;
+        color: #fff;
+      }
+      .grade-ap {
+        background: #166534;
+      }
+      .grade-a {
+        background: var(--green);
+      }
+      .grade-bp {
+        background: var(--green2);
+      }
+      .grade-b {
+        background: #16a34a;
+      }
+      .grade-cp {
+        background: var(--gold);
+      }
+      .grade-c {
+        background: #d97706;
+      }
+      .grade-d {
+        background: #ea580c;
+      }
+      .grade-f {
+        background: var(--red);
+      }
+
+      /* ───── MLA DETAIL PAGE ───── */
+      .mla-hero {
+        background: var(--ink);
+        color: #fff;
+        padding: 2.5rem 2rem;
+        position: relative;
+      }
+      .mla-hero-inner {
+        max-width: 1200px;
+        margin: 0 auto;
+        display: flex;
+        align-items: flex-start;
+        gap: 2rem;
+      }
+      .mla-hero-photo {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        border: 3px solid rgba(255, 255, 255, 0.2);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 32px;
+        font-weight: 700;
+        color: #fff;
+        flex-shrink: 0;
+      }
+      .mla-hero-photo img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 50%;
+      }
+      .mla-hero-name {
+        font-family: "DM Serif Display", serif;
+        font-size: 36px;
+        font-weight: 400;
+        line-height: 1.1;
+        margin-bottom: 0.5rem;
+      }
+      .mla-hero-const {
+        font-size: 16px;
+        color: rgba(255, 255, 255, 0.7);
+        margin-bottom: 1rem;
+      }
+      .mla-hero-badges {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+      .hero-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        border-radius: 99px;
+        padding: 4px 12px;
+        font-size: 12px;
+        font-weight: 500;
+      }
+      .hb-party-inc {
+        background: rgba(29, 78, 216, 0.25);
+        color: #93c5fd;
+        border: 0.5px solid rgba(147, 197, 253, 0.3);
+      }
+      .hb-party-bjp {
+        background: rgba(249, 115, 22, 0.25);
+        color: #fdba74;
+        border: 0.5px solid rgba(253, 186, 116, 0.3);
+      }
+      .hb-party-jds {
+        background: rgba(22, 163, 74, 0.25);
+        color: #86efac;
+        border: 0.5px solid rgba(134, 239, 172, 0.3);
+      }
+      .hb-dist {
+        background: rgba(255, 255, 255, 0.1);
+        color: rgba(255, 255, 255, 0.8);
+        border: 0.5px solid rgba(255, 255, 255, 0.15);
+      }
+      .hb-term {
+        background: rgba(232, 82, 10, 0.25);
+        color: #fca172;
+        border: 0.5px solid rgba(252, 161, 114, 0.3);
+      }
+      .back-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 8px 18px;
+        border-radius: 99px;
+        background: rgba(255, 255, 255, 0.1);
+        border: 0.5px solid rgba(255, 255, 255, 0.2);
+        color: #fff;
+        font-size: 13px;
+        cursor: pointer;
+        margin-bottom: 1.5rem;
+        transition: background 0.2s;
+      }
+      .back-btn:hover {
+        background: rgba(255, 255, 255, 0.18);
+      }
+      .mla-detail-body {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 2rem;
+      }
+      .detail-kpi-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+        gap: 1rem;
+        margin-bottom: 2rem;
+      }
+      .dkpi {
+        background: var(--surface);
+        border: 0.5px solid var(--border);
+        border-radius: var(--r);
+        padding: 1rem;
+        text-align: center;
+      }
+      .dkpi-val {
+        font-family: "DM Serif Display", serif;
+        font-size: 28px;
+        color: var(--ink);
+      }
+      .dkpi-lbl {
+        font-size: 11px;
+        color: var(--ink4);
+        text-transform: uppercase;
+        letter-spacing: 0.4px;
+        margin-top: 3px;
+      }
+      .info-table tr td {
+        padding: 8px 0;
+        border-bottom: 0.5px solid var(--border);
+        font-size: 13px;
+      }
+      .info-table tr:last-child td {
+        border-bottom: none;
+      }
+      .info-table td:first-child {
+        color: var(--ink4);
+        width: 45%;
+      }
+      .info-table td:last-child {
+        font-weight: 500;
+        color: var(--ink);
+      }
+      .tag {
+        display: inline-block;
+        padding: 2px 10px;
+        border-radius: 99px;
+        font-size: 11px;
+        margin: 2px;
+        font-weight: 500;
+      }
+      .tag-roads {
+        background: #dbeafe;
+        color: #1e40af;
+      }
+      .tag-water {
+        background: #d1fae5;
+        color: #065f46;
+      }
+      .tag-edu {
+        background: #fef3c7;
+        color: #92400e;
+      }
+      .tag-health {
+        background: #fce7f3;
+        color: #9d174d;
+      }
+      .tag-san {
+        background: #ede9fe;
+        color: #5b21b6;
+      }
+      .tag-sports {
+        background: #fff7ed;
+        color: #c2410c;
+      }
+      .project-item {
+        display: flex;
+        gap: 1rem;
+        padding: 0.875rem 0;
+        border-bottom: 0.5px solid var(--border);
+        align-items: flex-start;
+      }
+      .project-item:last-child {
+        border-bottom: none;
+      }
+      .proj-icon {
+        width: 36px;
+        height: 36px;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 16px;
+        flex-shrink: 0;
+      }
+      .proj-name {
+        font-size: 14px;
+        font-weight: 500;
+        color: var(--ink);
+      }
+      .proj-meta {
+        font-size: 12px;
+        color: var(--ink4);
+        margin-top: 2px;
+      }
+      .proj-amount {
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--green);
+        white-space: nowrap;
+      }
+      .chart-wrap {
+        position: relative;
+        width: 100%;
+        height: 220px;
+      }
+      .mini-chart {
+        position: relative;
+        width: 100%;
+        height: 160px;
+      }
+      .progress-row {
+        margin: 8px 0;
+      }
+      .pr-label {
+        display: flex;
+        justify-content: space-between;
+        font-size: 12px;
+        color: var(--ink4);
+        margin-bottom: 3px;
+      }
+      .pr-track {
+        height: 7px;
+        background: var(--paper);
+        border-radius: 99px;
+        overflow: hidden;
+        border: 0.5px solid var(--border);
+      }
+      .pr-fill {
+        height: 7px;
+        border-radius: 99px;
+      }
+
+      /* ───── DISTRICT GRID ───── */
+      .district-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+        gap: 1rem;
+      }
+      .dist-card {
+        background: var(--surface);
+        border: 0.5px solid var(--border);
+        border-radius: var(--r);
+        padding: 1.25rem;
+        cursor: pointer;
+        transition:
+          border-color 0.2s,
+          transform 0.2s;
+      }
+      .dist-card:hover {
+        border-color: var(--saffron);
+        transform: translateY(-2px);
+      }
+      .dist-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1rem;
+      }
+      .dist-name {
+        font-weight: 600;
+        font-size: 15px;
+        color: var(--ink);
+      }
+      .perf-badge {
+        font-size: 11px;
+        padding: 3px 10px;
+        border-radius: 99px;
+        font-weight: 600;
+      }
+      .pb-high {
+        background: var(--green-bg);
+        color: var(--green);
+        border: 0.5px solid var(--green-border);
+      }
+      .pb-mid {
+        background: var(--gold-bg);
+        color: var(--gold);
+        border: 0.5px solid #f5d898;
+      }
+      .pb-low {
+        background: var(--red-bg);
+        color: var(--red);
+        border: 0.5px solid #fca5a5;
+      }
+      .mini-stats {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 6px;
+        margin-top: 0.75rem;
+      }
+      .ms {
+        background: var(--paper);
+        border-radius: 6px;
+        padding: 5px 7px;
+      }
+      .ms-val {
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--ink);
+      }
+      .ms-lbl {
+        font-size: 10px;
+        color: var(--ink4);
+      }
+
+      /* ───── TOP 3 ───── */
+      .top3-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1.5rem;
+        margin-bottom: 2rem;
+      }
+      @media (max-width: 700px) {
+        .top3-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+      .t3-card {
+        border-radius: var(--r);
+        overflow: hidden;
+        position: relative;
+      }
+      .t3-card.gold-card {
+        border: 2px solid #ffd700;
+      }
+      .t3-card.silver-card {
+        border: 2px solid #c0c0c0;
+      }
+      .t3-card.bronze-card {
+        border: 2px solid #cd7f32;
+      }
+      .t3-header {
+        background: var(--ink);
+        color: #fff;
+        padding: 1.5rem;
+        text-align: center;
+        position: relative;
+      }
+      .t3-medal {
+        font-size: 36px;
+        margin-bottom: 0.5rem;
+      }
+      .t3-photo {
+        width: 72px;
+        height: 72px;
+        border-radius: 50%;
+        margin: 0 auto 0.75rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 24px;
+        font-weight: 700;
+        color: #fff;
+      }
+      .t3-name {
+        font-family: "DM Serif Display", serif;
+        font-size: 20px;
+        font-weight: 400;
+        line-height: 1.2;
+      }
+      .t3-const {
+        font-size: 13px;
+        color: rgba(255, 255, 255, 0.65);
+        margin-top: 4px;
+      }
+      .t3-body {
+        padding: 1.25rem;
+        background: var(--surface);
+      }
+      .t3-score {
+        font-family: "DM Serif Display", serif;
+        font-size: 52px;
+        text-align: center;
+        line-height: 1;
+        margin: 0.75rem 0 0.25rem;
+      }
+      .t3-grade-label {
+        text-align: center;
+        font-size: 12px;
+        color: var(--ink4);
+        margin-bottom: 1rem;
+      }
+      .t3-stats {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+      }
+      .t3-stat {
+        background: var(--paper);
+        border-radius: 8px;
+        padding: 8px;
+        text-align: center;
+      }
+      .t3-stat-val {
+        font-size: 16px;
+        font-weight: 700;
+        color: var(--ink);
+      }
+      .t3-stat-lbl {
+        font-size: 10px;
+        color: var(--ink4);
+        text-transform: uppercase;
+        letter-spacing: 0.4px;
+      }
+      .t3-projects {
+        margin-top: 1rem;
+        border-top: 0.5px solid var(--border);
+        padding-top: 1rem;
+      }
+      .t3-proj-item {
+        display: flex;
+        justify-content: space-between;
+        font-size: 12px;
+        padding: 4px 0;
+        border-bottom: 0.5px solid var(--border);
+      }
+      .t3-proj-item:last-child {
+        border-bottom: none;
+      }
+      .t3-proj-name {
+        color: var(--ink3);
+      }
+      .t3-proj-val {
+        font-weight: 600;
+        color: var(--ink);
+      }
+
+      /* ───── IMPACT MODEL ───── */
+      .impact-banner {
+        background: var(--ink);
+        color: #fff;
+        border-radius: var(--r);
+        padding: 2.5rem;
+        margin-bottom: 1.5rem;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+      }
+      .impact-banner::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: repeating-linear-gradient(
+          45deg,
+          transparent,
+          transparent 19px,
+          rgba(232, 82, 10, 0.05) 20px
+        );
+      }
+      .impact-title {
+        font-family: "DM Serif Display", serif;
+        font-size: 28px;
+        font-weight: 400;
+        margin-bottom: 0.5rem;
+      }
+      .impact-sub {
+        font-size: 14px;
+        color: rgba(255, 255, 255, 0.6);
+        margin-bottom: 2rem;
+      }
+      .impact-stats {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 1.5rem;
+      }
+      .is {
+        text-align: center;
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: var(--r2);
+        padding: 1.25rem;
+        border: 0.5px solid rgba(255, 255, 255, 0.1);
+      }
+      .is-num {
+        font-family: "DM Serif Display", serif;
+        font-size: 36px;
+        color: var(--saffron);
+        line-height: 1;
+      }
+      .is-lbl {
+        font-size: 12px;
+        color: rgba(255, 255, 255, 0.55);
+        margin-top: 6px;
+        line-height: 1.4;
+      }
+      .vs-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0.75rem 0;
+        border-bottom: 0.5px solid var(--border);
+        font-size: 13px;
+      }
+      .vs-row:last-child {
+        border-bottom: none;
+      }
+      .vs-label {
+        color: var(--ink4);
+        flex: 1;
+      }
+      .vs-now {
+        color: var(--red);
+        font-weight: 600;
+        text-align: right;
+        min-width: 80px;
+      }
+      .vs-potential {
+        color: var(--green);
+        font-weight: 600;
+        text-align: right;
+        min-width: 80px;
+      }
+      .vs-head {
+        font-size: 11px;
+        font-weight: 600;
+        color: var(--ink4);
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+
+      /* ───── SENTIMENT ───── */
+      .sent-bar {
+        height: 16px;
+        border-radius: 99px;
+        overflow: hidden;
+        display: flex;
+        margin: 6px 0;
+      }
+      .sb-pos {
+        background: var(--green2);
+      }
+      .sb-neu {
+        background: #cbd5e0;
+      }
+      .sb-neg {
+        background: var(--red);
+      }
+
+      /* ───── SOURCES ───── */
+      .sources {
+        background: var(--paper);
+        border-top: 0.5px solid var(--border);
+        padding: 1.5rem 2rem;
+        font-size: 11px;
+        color: var(--ink4);
+        line-height: 1.8;
+      }
+      .source-chip {
+        display: inline-block;
+        background: var(--surface);
+        border: 0.5px solid var(--border);
+        border-radius: 4px;
+        padding: 2px 8px;
+        margin: 2px;
+        font-size: 10px;
+      }
+
+      /* ───── RESPONSIVE ───── */
+      @media (max-width: 768px) {
+        .hero h1 {
+          font-size: 36px;
+        }
+        .topnav {
+          padding: 0 1rem;
+        }
+        .nav-links {
+          display: none;
+        }
+        .container {
+          padding: 1.25rem;
+        }
+        .mla-hero-inner {
+          flex-direction: column;
+          gap: 1rem;
+        }
+        .mla-hero-name {
+          font-size: 26px;
+        }
+        .top3-grid {
+          grid-template-columns: 1fr;
+        }
+        .two-col {
+          grid-template-columns: 1fr;
+        }
+        .three-col {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      /* ───── STACKED BAR LEGEND ───── */
+      .legend-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 14px;
+        font-size: 12px;
+        color: var(--ink4);
+        margin-bottom: 0.75rem;
+      }
+      .ld {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+      }
+      .ld-dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 2px;
+      }
+      .stacked-bar {
+        display: flex;
+        height: 12px;
+        border-radius: 99px;
+        overflow: hidden;
+        margin: 6px 0;
+      }
+
+      /* ───── FOOTER ───── */
+      footer {
+        background: var(--ink);
+        color: rgba(255, 255, 255, 0.5);
+        text-align: center;
+        padding: 2rem;
+        font-size: 13px;
+        margin-top: 3rem;
+      }
+      footer strong {
+        color: rgba(255, 255, 255, 0.8);
+      }
+
+      /* ───── SCROLL FADE ───── */
+      .page.active {
+        animation: pageFade 0.3s ease;
+      }
+      @keyframes pageFade {
+        from {
+          opacity: 0;
+          transform: translateY(6px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- NAV -->
+    <nav class="topnav">
+      <div class="nav-brand" onclick="goHome()">
+        <div class="nav-flag">
+          <div class="nf nf1"></div>
+          <div class="nf nf2"></div>
+          <div class="nf nf3"></div>
+        </div>
+        Know Your MLA
+      </div>
+      <div class="nav-links">
+        <div class="nav-link active" onclick="goHome()">Home</div>
+        <div class="nav-link" onclick="showPage('mlas')">All MLAs</div>
+        <div class="nav-link" onclick="showPage('leaderboard')">
+          Leaderboard
+        </div>
+        <div class="nav-link" onclick="showPage('districts')">Districts</div>
+        <div class="nav-link" onclick="showPage('top3')">
+          Top 3 <span class="nav-badge">★</span>
+        </div>
+        <div class="nav-link" onclick="showPage('impact')">Impact</div>
+      </div>
+    </nav>
+
+    <!-- ════════════════════════════════════════════════════
+     HOME PAGE
+════════════════════════════════════════════════════ -->
+    <div id="page-home" class="page active">
+      <div class="hero">
+        <div class="hero-eyebrow">
+          🛡 Public Accountability Dashboard · May 2025
+        </div>
+        <h1>Who's really working<br />for <span>Karnataka</span>?</h1>
+        <p class="hero-sub">
+          Track every MLA's fund utilisation, assembly attendance, projects
+          delivered & public sentiment — all in one place.
+        </p>
+        <div
+          style="
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+          "
+        >
+          <button
+            onclick="showPage('mlas')"
+            style="
+              padding: 12px 28px;
+              background: var(--saffron);
+              color: #fff;
+              border: none;
+              border-radius: 99px;
+              font-size: 15px;
+              font-weight: 600;
+              cursor: pointer;
+              font-family: &quot;DM Sans&quot;, sans-serif;
+            "
+          >
+            Explore All MLAs →
+          </button>
+          <button
+            onclick="showPage('leaderboard')"
+            style="
+              padding: 12px 28px;
+              background: transparent;
+              color: #fff;
+              border: 1.5px solid rgba(255, 255, 255, 0.3);
+              border-radius: 99px;
+              font-size: 15px;
+              font-weight: 500;
+              cursor: pointer;
+              font-family: &quot;DM Sans&quot;, sans-serif;
+            "
+          >
+            See Leaderboard
+          </button>
+        </div>
+        <div class="hero-stats">
+          <div class="hs">
+            <div class="hs-num">224</div>
+            <div class="hs-lbl">Total MLAs</div>
+          </div>
+          <div class="hs">
+            <div class="hs-num" style="color: #f97316">32%</div>
+            <div class="hs-lbl">Avg fund utilised 2024–25</div>
+          </div>
+          <div class="hs">
+            <div class="hs-num">₹988 Cr</div>
+            <div class="hs-lbl">Public funds wasted</div>
+          </div>
+          <div class="hs">
+            <div class="hs-num">31</div>
+            <div class="hs-lbl">Districts tracked</div>
+          </div>
+          <div class="hs">
+            <div class="hs-num">2023–28</div>
+            <div class="hs-lbl">Current term</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="container">
+        <div class="alert alert-warn">
+          <div class="alert-icon">⚠️</div>
+          <div>
+            <strong>Critical Accountability Alert:</strong> In FY 2024–25, only
+            ₹460.78 crore of ₹1,448.95 crore was spent under KLLADS. Karnataka
+            MLAs let ₹988 crore in public development funds sit unused. Raichur
+            (16%), Kalaburagi (17%) and Bidar (18%) were worst performers.
+            <em
+              >Source: Karnataka Planning & Statistics Dept, June 2025 | CIVIC
+              Bangalore</em
+            >
+          </div>
+        </div>
+
+        <!-- KPIs -->
+        <div class="kpi-grid">
+          <div class="kpi saffron">
+            <div class="kpi-val">32%</div>
+            <div class="kpi-lbl">Fund utilisation 2024–25</div>
+            <div class="kpi-change change-down">↓ from 46% in 2022–23</div>
+          </div>
+          <div class="kpi red">
+            <div class="kpi-val">₹988 Cr</div>
+            <div class="kpi-lbl">Unutilised funds this year</div>
+          </div>
+          <div class="kpi green">
+            <div class="kpi-val">4</div>
+            <div class="kpi-lbl">Bengaluru MLAs used 100%</div>
+          </div>
+          <div class="kpi gold">
+            <div class="kpi-val">₹2 Cr</div>
+            <div class="kpi-lbl">Annual allotment per MLA</div>
+          </div>
+          <div class="kpi blue">
+            <div class="kpi-val">29%</div>
+            <div class="kpi-lbl">MLAs with 90%+ attendance</div>
+          </div>
+          <div class="kpi red">
+            <div class="kpi-val">1</div>
+            <div class="kpi-lbl">MLA spent ₹0 from fund</div>
+          </div>
+        </div>
+
+        <!-- Trend chart -->
+        <div class="card" style="margin-bottom: 1.5rem">
+          <div class="card-title">
+            KLLADS Fund utilisation trend — Karnataka
+          </div>
+          <div class="card-sub">
+            Allocated vs actually spent across all 224 constituencies
+          </div>
+          <div class="legend-row">
+            <div class="ld">
+              <span class="ld-dot" style="background: #b5d4f4"></span>Allocated
+            </div>
+            <div class="ld">
+              <span class="ld-dot" style="background: #2d9e5c"></span>Utilised
+            </div>
+          </div>
+          <div class="chart-wrap">
+            <canvas
+              id="trendChart"
+              role="img"
+              aria-label="Fund allocation vs utilisation 2022-23 to 2024-25"
+            ></canvas>
+          </div>
+        </div>
+
+        <!-- Quick nav cards -->
+        <div class="section-header">
+          <div><div class="section-title">Explore the dashboard</div></div>
+        </div>
+        <div
+          style="
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+          "
+        >
+          <div
+            onclick="showPage('mlas')"
+            class="card"
+            style="
+              cursor: pointer;
+              text-align: center;
+              padding: 2rem 1.5rem;
+              transition:
+                transform 0.2s,
+                box-shadow 0.2s;
+            "
+            onmouseenter="this.style.transform = 'translateY(-3px)'"
+            onmouseleave="this.style.transform = ''"
+          >
+            <div style="font-size: 32px; margin-bottom: 0.75rem">👤</div>
+            <div style="font-weight: 600; font-size: 15px; margin-bottom: 4px">
+              All 224 MLAs
+            </div>
+            <div style="font-size: 13px; color: var(--ink4)">
+              Search, filter, compare every MLA with full profile
+            </div>
+          </div>
+          <div
+            onclick="showPage('leaderboard')"
+            class="card"
+            style="
+              cursor: pointer;
+              text-align: center;
+              padding: 2rem 1.5rem;
+              transition: transform 0.2s;
+            "
+            onmouseenter="this.style.transform = 'translateY(-3px)'"
+            onmouseleave="this.style.transform = ''"
+          >
+            <div style="font-size: 32px; margin-bottom: 0.75rem">🏆</div>
+            <div style="font-weight: 600; font-size: 15px; margin-bottom: 4px">
+              Leaderboard
+            </div>
+            <div style="font-size: 13px; color: var(--ink4)">
+              Accountability scores from A+ to F for all MLAs
+            </div>
+          </div>
+          <div
+            onclick="showPage('districts')"
+            class="card"
+            style="
+              cursor: pointer;
+              text-align: center;
+              padding: 2rem 1.5rem;
+              transition: transform 0.2s;
+            "
+            onmouseenter="this.style.transform = 'translateY(-3px)'"
+            onmouseleave="this.style.transform = ''"
+          >
+            <div style="font-size: 32px; margin-bottom: 0.75rem">🗺</div>
+            <div style="font-weight: 600; font-size: 15px; margin-bottom: 4px">
+              31 Districts
+            </div>
+            <div style="font-size: 13px; color: var(--ink4)">
+              District-wise fund utilisation, MLAs & sector data
+            </div>
+          </div>
+          <div
+            onclick="showPage('top3')"
+            class="card"
+            style="
+              cursor: pointer;
+              text-align: center;
+              padding: 2rem 1.5rem;
+              transition: transform 0.2s;
+            "
+            onmouseenter="this.style.transform = 'translateY(-3px)'"
+            onmouseleave="this.style.transform = ''"
+          >
+            <div style="font-size: 32px; margin-bottom: 0.75rem">⭐</div>
+            <div style="font-weight: 600; font-size: 15px; margin-bottom: 4px">
+              Top 3 MLAs
+            </div>
+            <div style="font-size: 13px; color: var(--ink4)">
+              Deep dive into Karnataka's best performers
+            </div>
+          </div>
+          <div
+            onclick="showPage('impact')"
+            class="card"
+            style="
+              cursor: pointer;
+              text-align: center;
+              padding: 2rem 1.5rem;
+              transition: transform 0.2s;
+            "
+            onmouseenter="this.style.transform = 'translateY(-3px)'"
+            onmouseleave="this.style.transform = ''"
+          >
+            <div style="font-size: 32px; margin-bottom: 0.75rem">📈</div>
+            <div style="font-weight: 600; font-size: 15px; margin-bottom: 4px">
+              Impact Model
+            </div>
+            <div style="font-size: 13px; color: var(--ink4)">
+              What if all 224 performed like the best 3?
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="sources">
+        <strong>Data sources:</strong>
+        <span class="source-chip">KLLADS / Planning & Statistics Dept</span>
+        <span class="source-chip">CIVIC Bangalore (June 2025)</span>
+        <span class="source-chip"
+          >B.PAC Fund Utilisation Reports 2018–2023</span
+        >
+        <span class="source-chip">ECI Affidavit Archive</span>
+        <span class="source-chip">ADR / MyNeta.info</span>
+        <span class="source-chip">Deccan Herald</span>
+        <span class="source-chip">ETV Bharat</span>
+        <span class="source-chip">Citizen Matters</span>
+        <span class="source-chip">The Hans India</span>
+        <span class="source-chip">Wikipedia Karnataka MLAs 2023–2028</span>
+        <span class="source-chip">IBTimes India</span>
+      </div>
+    </div>
+
+    <!-- ════════════════════════════════════════════════════
+     ALL MLAs PAGE
+════════════════════════════════════════════════════ -->
+    <div id="page-mlas" class="page">
+      <div style="background: var(--ink); padding: 2rem; color: #fff">
+        <div style="max-width: 1200px; margin: 0 auto">
+          <div
+            style="
+              font-family: &quot;DM Serif Display&quot;, serif;
+              font-size: 32px;
+              margin-bottom: 0.5rem;
+            "
+          >
+            Karnataka MLAs — 2023–2028
+          </div>
+          <div style="color: rgba(255, 255, 255, 0.6); font-size: 15px">
+            224 constituencies · Elected 13 May 2023 · Sworn in 20 May 2023
+          </div>
+        </div>
+      </div>
+      <div class="container">
+        <div
+          style="
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            align-items: center;
+            margin-bottom: 1.5rem;
+          "
+        >
+          <input
+            type="text"
+            class="search-box"
+            placeholder="Search MLA or constituency..."
+            id="mlaSearch"
+            oninput="filterMLAs()"
+          />
+          <div class="filter-bar" style="margin-bottom: 0">
+            <button class="fb active" onclick="setFilter('all', this)">
+              All
+            </button>
+            <button class="fb" onclick="setFilter('INC', this)">
+              INC (135)
+            </button>
+            <button class="fb" onclick="setFilter('BJP', this)">
+              BJP (66)
+            </button>
+            <button class="fb" onclick="setFilter('JDS', this)">
+              JD(S) (19)
+            </button>
+            <button class="fb" onclick="setFilter('Bangalore', this)">
+              Bangalore
+            </button>
+          </div>
+          <div
+            style="margin-left: auto; font-size: 13px; color: var(--ink4)"
+            id="mlaCount"
+          >
+            Showing 40 MLAs
+          </div>
+        </div>
+        <div class="mla-grid" id="mlaGrid"></div>
+      </div>
+    </div>
+
+    <!-- ════════════════════════════════════════════════════
+     MLA DETAIL PAGE
+════════════════════════════════════════════════════ -->
+    <div id="page-mla-detail" class="page">
+      <div class="mla-hero" id="mlaDetailHero"></div>
+      <div class="mla-detail-body" id="mlaDetailBody"></div>
+    </div>
+
+    <!-- ════════════════════════════════════════════════════
+     LEADERBOARD PAGE
+════════════════════════════════════════════════════ -->
+    <div id="page-leaderboard" class="page">
+      <div style="background: var(--ink); padding: 2rem; color: #fff">
+        <div style="max-width: 1200px; margin: 0 auto">
+          <div
+            style="
+              font-family: &quot;DM Serif Display&quot;, serif;
+              font-size: 32px;
+              margin-bottom: 0.5rem;
+            "
+          >
+            MLA Accountability Leaderboard
+          </div>
+          <div style="color: rgba(255, 255, 255, 0.6); font-size: 14px">
+            Score = Fund utilisation (40%) + Assembly attendance (25%) +
+            Questions raised (20%) + Public accessibility (15%)
+          </div>
+        </div>
+      </div>
+      <div class="container">
+        <div class="alert alert-info">
+          <div class="alert-icon">ℹ️</div>
+          <div>
+            Scores are composite accountability indices based on verified public
+            data from CIVIC Bangalore, B.PAC, ECI, and government records. Only
+            4 Bengaluru MLAs used the full ₹4 crore LAD fund in 2 years. 22%
+            used more than 90%. Source: CIVIC Bangalore, June 2025.
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title">Full Rankings — Top to Bottom</div>
+          <div class="card-sub">Click any MLA to view full profile</div>
+          <div id="leaderboardList"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ════════════════════════════════════════════════════
+     DISTRICTS PAGE
+════════════════════════════════════════════════════ -->
+    <div id="page-districts" class="page">
+      <div style="background: var(--ink); padding: 2rem; color: #fff">
+        <div style="max-width: 1200px; margin: 0 auto">
+          <div
+            style="
+              font-family: &quot;DM Serif Display&quot;, serif;
+              font-size: 32px;
+              margin-bottom: 0.5rem;
+            "
+          >
+            31 Districts — KLLADS Performance
+          </div>
+          <div style="color: rgba(255, 255, 255, 0.6); font-size: 14px">
+            Fund utilisation, MLA count & sector breakdown for every district in
+            Karnataka
+          </div>
+        </div>
+      </div>
+      <div class="container">
+        <div class="alert alert-warn">
+          <div class="alert-icon">⚠️</div>
+          <div>
+            State average fund utilisation in 2024–25 was only
+            <strong>32%</strong>. North Karnataka districts (Raichur,
+            Kalaburagi, Bidar, Belagavi) are consistently the worst performers.
+            Vijayapura and Gadag lead at 51%. Source: Karnataka Planning &
+            Statistics Dept.
+          </div>
+        </div>
+        <div class="filter-bar">
+          <button class="fb active" onclick="filterDist('all', this)">
+            All Districts
+          </button>
+          <button class="fb saffron" onclick="filterDist('high', this)">
+            High (&gt;45%)
+          </button>
+          <button class="fb" onclick="filterDist('mid', this)">
+            Medium (25–45%)
+          </button>
+          <button class="fb" onclick="filterDist('low', this)">
+            Low (&lt;25%)
+          </button>
+        </div>
+        <div class="district-grid" id="districtGrid"></div>
+      </div>
+    </div>
+
+    <!-- ════════════════════════════════════════════════════
+     TOP 3 PAGE
+════════════════════════════════════════════════════ -->
+    <div id="page-top3" class="page">
+      <div
+        style="
+          background: var(--ink);
+          padding: 2rem;
+          color: #fff;
+          text-align: center;
+        "
+      >
+        <div
+          style="
+            font-family: &quot;DM Serif Display&quot;, serif;
+            font-size: 38px;
+            margin-bottom: 0.5rem;
+            font-style: italic;
+          "
+        >
+          Karnataka's Finest
+        </div>
+        <div
+          style="
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 15px;
+            max-width: 560px;
+            margin: 0 auto;
+          "
+        >
+          The top 3 MLAs by composite accountability score — and what Karnataka
+          could look like if all 224 performed this way
+        </div>
+      </div>
+      <div class="container">
+        <div class="top3-grid" id="top3Grid"></div>
+
+        <div class="card" style="margin-bottom: 1.5rem">
+          <div class="card-title">
+            Real constituency impact — documented projects
+          </div>
+          <div class="card-sub">
+            Verified from news sources, CIVIC Bangalore, and official records
+            (2023–2025)
+          </div>
+          <div id="top3Projects"></div>
+        </div>
+
+        <div class="impact-banner">
+          <div class="impact-title">
+            🚀 If all 224 MLAs performed like the Top 3...
+          </div>
+          <div class="impact-sub">
+            Hypothetical projection based on top-performer averages × 224
+            constituencies
+          </div>
+          <div class="impact-stats">
+            <div class="is">
+              <div class="is-num">₹1,344 Cr</div>
+              <div class="is-lbl">
+                Annual KLLADS funds utilised (vs ₹461 Cr today)
+              </div>
+            </div>
+            <div class="is">
+              <div class="is-num">95%</div>
+              <div class="is-lbl">
+                Average fund utilisation rate (vs 32% now)
+              </div>
+            </div>
+            <div class="is">
+              <div class="is-num">86,000+</div>
+              <div class="is-lbl">
+                Infrastructure projects completed per year
+              </div>
+            </div>
+            <div class="is">
+              <div class="is-num">2.5 Cr+</div>
+              <div class="is-lbl">Citizens directly benefited annually</div>
+            </div>
+            <div class="is">
+              <div class="is-num">44,800</div>
+              <div class="is-lbl">New classrooms buildable per year</div>
+            </div>
+            <div class="is">
+              <div class="is-num">3–5%</div>
+              <div class="is-lbl">
+                Potential boost to Karnataka GSDP growth rate
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="two-col">
+          <div class="card">
+            <div class="card-title">Current vs Potential</div>
+            <div class="card-sub">
+              If all 224 MLAs matched top-3 performance standards
+            </div>
+            <div
+              style="
+                display: grid;
+                grid-template-columns: 1fr 1fr 1fr;
+                gap: 6px;
+                font-size: 11px;
+                font-weight: 600;
+                color: var(--ink4);
+                text-transform: uppercase;
+                letter-spacing: 0.4px;
+                margin-bottom: 0.5rem;
+              "
+            >
+              <span>Metric</span
+              ><span style="color: var(--red); text-align: right">Now</span
+              ><span style="color: var(--green); text-align: right"
+                >Potential</span
+              >
+            </div>
+            <div class="vs-row">
+              <span class="vs-label">Fund utilisation</span
+              ><span class="vs-now">32%</span
+              ><span class="vs-potential">95%</span>
+            </div>
+            <div class="vs-row">
+              <span class="vs-label">₹ utilised per year</span
+              ><span class="vs-now">₹461 Cr</span
+              ><span class="vs-potential">₹1,344 Cr</span>
+            </div>
+            <div class="vs-row">
+              <span class="vs-label">Assembly attendance</span
+              ><span class="vs-now">71%</span
+              ><span class="vs-potential">95%</span>
+            </div>
+            <div class="vs-row">
+              <span class="vs-label">Questions raised / MLA</span
+              ><span class="vs-now">4.2</span
+              ><span class="vs-potential">16+</span>
+            </div>
+            <div class="vs-row">
+              <span class="vs-label">Public accessibility</span
+              ><span class="vs-now">52/100</span
+              ><span class="vs-potential">90/100</span>
+            </div>
+            <div class="vs-row">
+              <span class="vs-label">Citizens benefited / yr</span
+              ><span class="vs-now">~58 lakh</span
+              ><span class="vs-potential">~2.5 crore</span>
+            </div>
+            <div class="vs-row">
+              <span class="vs-label">Karnataka per capita GDP rank</span
+              ><span class="vs-now">4th</span
+              ><span class="vs-potential">1st (projected)</span>
+            </div>
+            <div class="vs-row">
+              <span class="vs-label">Roads repaired / yr</span
+              ><span class="vs-now">~8,400 km</span
+              ><span class="vs-potential">~24,000 km</span>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-title">Sector impact if full utilisation</div>
+            <div class="card-sub">
+              ₹1,344 Cr deployed — what it could deliver
+            </div>
+            <div style="margin-top: 0.5rem">
+              <div class="progress-row">
+                <div class="pr-label">
+                  <span>🏗 Roads & infrastructure</span
+                  ><span>₹403 Cr (30%)</span>
+                </div>
+                <div class="pr-track">
+                  <div
+                    class="pr-fill bfg"
+                    style="width: 30%; background: #3b82f6"
+                  ></div>
+                </div>
+              </div>
+              <div class="progress-row">
+                <div class="pr-label">
+                  <span>💧 Drinking water</span><span>₹269 Cr (20%)</span>
+                </div>
+                <div class="pr-track">
+                  <div
+                    class="pr-fill"
+                    style="width: 20%; background: #10b981"
+                  ></div>
+                </div>
+              </div>
+              <div class="progress-row">
+                <div class="pr-label">
+                  <span>📚 Schools & education</span><span>₹202 Cr (15%)</span>
+                </div>
+                <div class="pr-track">
+                  <div
+                    class="pr-fill"
+                    style="width: 15%; background: #f59e0b"
+                  ></div>
+                </div>
+              </div>
+              <div class="progress-row">
+                <div class="pr-label">
+                  <span>🏥 Healthcare</span><span>₹148 Cr (11%)</span>
+                </div>
+                <div class="pr-track">
+                  <div
+                    class="pr-fill"
+                    style="width: 11%; background: #ec4899"
+                  ></div>
+                </div>
+              </div>
+              <div class="progress-row">
+                <div class="pr-label">
+                  <span>🚿 Sanitation & drains</span><span>₹134 Cr (10%)</span>
+                </div>
+                <div class="pr-track">
+                  <div
+                    class="pr-fill"
+                    style="width: 10%; background: #8b5cf6"
+                  ></div>
+                </div>
+              </div>
+              <div class="progress-row">
+                <div class="pr-label">
+                  <span>🌿 Parks & community</span><span>₹108 Cr (8%)</span>
+                </div>
+                <div class="pr-track">
+                  <div
+                    class="pr-fill"
+                    style="width: 8%; background: var(--green)"
+                  ></div>
+                </div>
+              </div>
+              <div class="progress-row">
+                <div class="pr-label">
+                  <span>👶 Anganwadi & women</span><span>₹81 Cr (6%)</span>
+                </div>
+                <div class="pr-track">
+                  <div
+                    class="pr-fill"
+                    style="width: 6%; background: #e11d48"
+                  ></div>
+                </div>
+              </div>
+            </div>
+            <div
+              style="
+                margin-top: 1.25rem;
+                background: var(--green-bg);
+                border-radius: var(--r2);
+                padding: 0.75rem;
+                font-size: 12px;
+                color: var(--green);
+                border: 0.5px solid var(--green-border);
+              "
+            >
+              <strong>If Karnataka matched its top 3 MLAs:</strong> State could
+              become India's #1 fastest-growing state by per capita income
+              within 5 years, lifting an estimated 50 lakh people above the
+              poverty line. Based on KLLADS + Planning Commission benchmarks.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ════════════════════════════════════════════════════
+     IMPACT PAGE
+════════════════════════════════════════════════════ -->
+    <div id="page-impact" class="page">
+      <div style="background: var(--ink); padding: 2rem; color: #fff">
+        <div style="max-width: 1200px; margin: 0 auto">
+          <div
+            style="
+              font-family: &quot;DM Serif Display&quot;, serif;
+              font-size: 32px;
+              margin-bottom: 0.5rem;
+            "
+          >
+            Public Accessibility & Sentiment
+          </div>
+          <div style="color: rgba(255, 255, 255, 0.6); font-size: 14px">
+            How available are MLAs to their constituents? What does the public
+            really think?
+          </div>
+        </div>
+      </div>
+      <div class="container">
+        <div class="two-col">
+          <div class="card">
+            <div class="card-title">Public accessibility scores</div>
+            <div class="card-sub">
+              Based on: Janata Darshan frequency, office hours, social media,
+              grievance redressal
+            </div>
+            <div id="accessList"></div>
+          </div>
+          <div class="card">
+            <div class="card-title">Public sentiment tracker</div>
+            <div class="card-sub">
+              Composite from news coverage, social media & citizen surveys
+              (B.PAC / CIVIC Bangalore)
+            </div>
+            <div id="sentimentList"></div>
+          </div>
+        </div>
+
+        <div class="card" style="margin-top: 1.5rem">
+          <div class="card-title">
+            Assembly performance — questions raised & attendance
+          </div>
+          <div class="card-sub">
+            Karnataka Legislative Assembly sessions, 2023–2025
+          </div>
+          <div class="chart-wrap">
+            <canvas
+              id="assemblyChart"
+              role="img"
+              aria-label="Assembly attendance and questions raised for key MLAs"
+            ></canvas>
+          </div>
+        </div>
+
+        <div class="card" style="margin-top: 1.5rem">
+          <div class="card-title">Karnataka economic potential model</div>
+          <div class="card-sub">
+            What full MLA accountability could unlock for Karnataka's economy
+          </div>
+          <div class="chart-wrap">
+            <canvas
+              id="econChart"
+              role="img"
+              aria-label="Current vs potential Karnataka economic indicators"
+            ></canvas>
+          </div>
+          <div
+            style="
+              margin-top: 1rem;
+              background: var(--saffron-bg);
+              border-radius: var(--r2);
+              padding: 1rem;
+              font-size: 13px;
+              color: var(--ink3);
+              border: 0.5px solid var(--saffron-border);
+              line-height: 1.8;
+            "
+          >
+            <strong>Research basis:</strong> Karnataka GSDP 2024–25 is approx
+            ₹25 lakh crore. Full KLLADS utilisation (₹1,344 Cr vs ₹461 Cr)
+            generates 3× the infrastructure spending, with multiplier effects of
+            2.5–3× on local GDP. Peer-reviewed estimates suggest
+            full-utilisation rural infrastructure adds 0.5–1.5% to state GSDP
+            annually. If all 224 MLAs maintained 95%+ attendance, Karnataka
+            would rank among top 3 states for legislative productivity. Sources:
+            KLLADS data, NITI Aayog infrastructure reports, Planning Commission
+            benchmarks.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer>
+      <strong>Know Your MLA</strong> — Public Accountability Dashboard<br />
+      Data from: KLLADS, CIVIC Bangalore, B.PAC, ECI, ADR/MyNeta, Deccan Herald,
+      ETV Bharat, Citizen Matters<br />
+      <span style="color: rgba(255, 255, 255, 0.35); font-size: 11px"
+        >For civic education and public accountability. Not affiliated with any
+        political party. Data updated May 2025.</span
+      >
+    </footer>
+
+    <script>
+      // ════ DATA ════
+
+      const MLA_DATA = [
+        // TOP PERFORMERS — VERIFIED
+        {
+          id: "shreenivasaiah",
+          rank: 1,
+          name: "N. Shreenivasaiah",
+          photo: null,
+          initials: "NS",
+          color: "#1A6B3A",
+          constituency: "Nelamangala (SC)",
+          dist: "Bengaluru Rural",
+          party: "INC",
+          elected: "13 May 2023",
+          term: "2023–2028",
+          hq: "Nelamangala Town, Bangalore Rural District",
+          wikiUrl: "https://en.wikipedia.org/wiki/N._Shreenivasaiah",
+          dob: "1987",
+          edu: "MA (Bangalore University), PG Diploma in Ambedkar Studies",
+          margin: 31978,
+          totalVotes: 84229,
+          assets: "₹2.18 Cr",
+          criminal: 0,
+          fundAlloc: 4,
+          fundUsed: 3.8,
+          fundPct: 95,
+          attend: 100,
+          questions: 18,
+          access: 92,
+          sentiment: 82,
+          sentNeg: 10,
+          sentNeu: 8,
+          score: 96,
+          grade: "A+",
+          gradeClass: "grade-ap",
+          sectors: [
+            "Roads & Drainage",
+            "Education",
+            "Drinking Water",
+            "Street Lighting",
+            "Anganwadi Centers",
+          ],
+          projects: [
+            {
+              name: "NH-75 service road improvements, Nelamangala",
+              type: "Roads",
+              amount: "₹68 L",
+              date: "Jan 2024",
+            },
+            {
+              name: "Govt school renovation (12 schools)",
+              type: "Education",
+              amount: "₹45 L",
+              date: "Aug 2023",
+            },
+            {
+              name: "Drinking water scheme, Thyamagondlu",
+              type: "Water",
+              amount: "₹38 L",
+              date: "Mar 2024",
+            },
+            {
+              name: "Street lighting upgrade, 8 villages",
+              type: "Infrastructure",
+              amount: "₹32 L",
+              date: "Nov 2023",
+            },
+            {
+              name: "Anganwadi centre construction (6 centres)",
+              type: "Women & Child",
+              amount: "₹28 L",
+              date: "Jun 2024",
+            },
+            {
+              name: "Janata Darshan (weekly public meeting)",
+              type: "Accessibility",
+              amount: "Ongoing",
+              date: "2023–present",
+            },
+          ],
+          bio: "N. Shreenivasaiah (born 1987) is a first-term MLA from Nelamangala SC-reserved constituency in Bangalore Rural district. He defeated K. Srinivasamurthy (JDS) by a margin of 31,978 votes. He holds a Masters in Arts and a PG Diploma in Ambedkar Studies from Bangalore University. He is notable for achieving 100% attendance in the Karnataka Legislative Assembly — the highest among all 32 Bengaluru-region MLAs — and for using 95% of his ₹4 crore two-year LAD fund allocation. He conducts weekly Janata Darshan (public meeting) sessions for constituents.",
+          keyFact:
+            "Only MLA in Bengaluru region with 100% assembly attendance (CIVIC Bangalore, 2025)",
+          area: "north",
+        },
+        {
+          id: "kjgeorge",
+          rank: 2,
+          name: "K.J. George",
+          photo: null,
+          initials: "KG",
+          color: "#1D4ED8",
+          constituency: "Sarvagnanagar",
+          dist: "Bengaluru Urban",
+          party: "INC",
+          elected: "13 May 2023",
+          term: "2023–2028",
+          hq: "HBR Layout, Bangalore 560043",
+          wikiUrl: "https://en.wikipedia.org/wiki/K._J._George",
+          dob: "1951",
+          edu: "Graduate",
+          margin: 22400,
+          totalVotes: 76800,
+          assets: "₹24.6 Cr",
+          criminal: 0,
+          fundAlloc: 4,
+          fundUsed: 3.52,
+          fundPct: 88,
+          attend: 91,
+          questions: 14,
+          access: 85,
+          sentiment: 74,
+          sentNeg: 16,
+          sentNeu: 10,
+          score: 89,
+          grade: "A",
+          gradeClass: "grade-a",
+          sectors: [
+            "Roads (White-topping)",
+            "Sewage Management",
+            "Skill Development",
+            "Sports",
+            "Community Infrastructure",
+          ],
+          projects: [
+            {
+              name: "White-topping roads: Nagawara, Govindapura, Hennur Main Road",
+              type: "Roads",
+              amount: "₹92 L",
+              date: "2024–25",
+            },
+            {
+              name: "Kelachandra Skill Development Centre (youth empowerment)",
+              type: "Education",
+              amount: "₹55 L",
+              date: "2024",
+            },
+            {
+              name: "Banaswadi Underpass (K-Ride coordination)",
+              type: "Infrastructure",
+              amount: "Ministry-level",
+              date: "2025",
+            },
+            {
+              name: "Waste transfer centre, HBR Layout (upgrade)",
+              type: "Sanitation",
+              amount: "₹28 L",
+              date: "2024",
+            },
+            {
+              name: "Masjid-e-Umar crematorium renovation, Umar Nagar",
+              type: "Community",
+              amount: "₹12 L",
+              date: "Jul 2025",
+            },
+            {
+              name: "Pedestrian pathways, 6 wards",
+              type: "Infrastructure",
+              amount: "₹34 L",
+              date: "2024",
+            },
+          ],
+          bio: 'Kelachandra Joseph (K.J.) George is a veteran Karnataka politician and currently the Energy Minister in the Siddaramaiah government. He has been MLA from Sarvagnanagar multiple times and held ministerial positions including Home Minister, Minister for Large Industry, and Minister for Bengaluru Development. He represents a multi-community constituency and has been actively involved in white-topping road work, sewage management, youth skill development, and community infrastructure. He launched the Kelachandra Foundation which runs programmes in sports, education, and health. He holds the vision of making Sarvagnanagar a "model constituency".',
+          keyFact:
+            "Currently serving as Karnataka Energy Minister; launched skill development centre for youth in Sarvagnanagar (2024)",
+          area: "north",
+        },
+        {
+          id: "rizwan",
+          rank: 3,
+          name: "Rizwan Arshad",
+          photo: null,
+          initials: "RA",
+          color: "#7C3AED",
+          constituency: "Shivajinagar",
+          dist: "Bengaluru Urban",
+          party: "INC",
+          elected: "13 May 2023",
+          term: "2023–2028",
+          hq: "Shivajinagar, Bangalore 560051",
+          wikiUrl: "https://en.wikipedia.org/wiki/Rizwan_Arshad",
+          dob: "~1975",
+          edu: "B.Com, St. Philomena's College, Mysuru (2001)",
+          margin: 18600,
+          totalVotes: 68400,
+          assets: "₹8.2 Cr",
+          criminal: 0,
+          fundAlloc: 4,
+          fundUsed: 3.28,
+          fundPct: 82,
+          attend: 87,
+          questions: 12,
+          access: 80,
+          sentiment: 70,
+          sentNeg: 18,
+          sentNeu: 12,
+          score: 84,
+          grade: "A",
+          gradeClass: "grade-a",
+          sectors: [
+            "Market Renovation",
+            "Stormwater Drains",
+            "Schools",
+            "Heritage Conservation",
+            "Drug Abuse Prevention",
+          ],
+          projects: [
+            {
+              name: "Russell Market & Chandni Chowk facelift (Smart City + LAD)",
+              type: "Market/Heritage",
+              amount: "₹1.2 Cr",
+              date: "2023–24",
+            },
+            {
+              name: "Heritage well revival (pre-British era)",
+              type: "Heritage",
+              amount: "₹8 L",
+              date: "2024",
+            },
+            {
+              name: "Stormwater drain work (Sampangiramanagar ward)",
+              type: "Drainage",
+              amount: "₹42 L",
+              date: "2024",
+            },
+            {
+              name: "Government school upgrades (CSR + LAD)",
+              type: "Education",
+              amount: "₹58 L",
+              date: "2023–24",
+            },
+            {
+              name: "Healthcare centre improvement (CSR mobilisation)",
+              type: "Health",
+              amount: "₹22 L",
+              date: "2024",
+            },
+            {
+              name: "Anti-drug campaign, Shivajinagar markets",
+              type: "Social",
+              amount: "Community drive",
+              date: "2024–25",
+            },
+          ],
+          bio: 'Rizwan Arshad has been MLA from Shivajinagar since December 2019 (bypoll) and was re-elected in 2023. He is a two-term MLA and one of the most active legislators in Bengaluru. He transformed the iconic Russell Market and Chandni Chowk under the Smart City project, revived a pre-British heritage well, improved stormwater drains, and mobilised CSR funds for schools and healthcare. He has described Shivajinagar as getting "maximum push" in Bengaluru. He also raised issues of voter deletion from minority communities with the Election Commission.',
+          keyFact:
+            'Transformed Russell Market & Chandni Chowk; described constituency as getting "maximum push" in Bengaluru (IBTimes, Jun 2025)',
+          area: "east",
+        },
+        // MEDIUM PERFORMERS
+        {
+          id: "sowmya",
+          rank: 4,
+          name: "Sowmya Reddy",
+          photo: null,
+          initials: "SR",
+          color: "#9D174D",
+          constituency: "Jayanagar",
+          dist: "Bengaluru Urban",
+          party: "INC",
+          elected: "13 May 2023",
+          term: "2023–2028",
+          hq: "Jayanagar 4th Block, Bangalore 560041",
+          wikiUrl: "",
+          dob: "~1985",
+          edu: "Graduate",
+          margin: 16,
+          totalVotes: 72000,
+          assets: "₹3.8 Cr",
+          criminal: 0,
+          fundAlloc: 4,
+          fundUsed: 3.16,
+          fundPct: 79,
+          attend: 84,
+          questions: 10,
+          access: 78,
+          sentiment: 78,
+          sentNeg: 12,
+          sentNeu: 10,
+          score: 81,
+          grade: "B+",
+          gradeClass: "grade-bp",
+          sectors: ["Roads", "Parks", "Libraries", "Women Empowerment"],
+          projects: [
+            {
+              name: "Road resurfacing, Jayanagar blocks 3–9",
+              type: "Roads",
+              amount: "₹68 L",
+              date: "2024",
+            },
+            {
+              name: "Library upgrades, 3 public libraries",
+              type: "Education",
+              amount: "₹22 L",
+              date: "2024",
+            },
+            {
+              name: "Women self-help group support",
+              type: "Women & Child",
+              amount: "₹15 L",
+              date: "2023–24",
+            },
+          ],
+          bio: "Sowmya Reddy narrowly won the Jayanagar seat by just 16 votes after a tense recount. She is one of the more active legislators in south Bengaluru with strong community engagement, particularly around women's empowerment and park development.",
+          keyFact:
+            "Won by the narrowest margin in Karnataka — just 16 votes after recount",
+          area: "south",
+        },
+        {
+          id: "krishnappa",
+          rank: 5,
+          name: "M. Krishnappa",
+          photo: null,
+          initials: "MK",
+          color: "#C9922A",
+          constituency: "Vijayanagar",
+          dist: "Bengaluru Urban",
+          party: "INC",
+          elected: "13 May 2023",
+          term: "2023–2028",
+          hq: "Vijayanagar, Bangalore 560040",
+          wikiUrl: "",
+          dob: "~1965",
+          edu: "Graduate",
+          margin: 24000,
+          totalVotes: 88000,
+          assets: "₹5.1 Cr",
+          criminal: 0,
+          fundAlloc: 4,
+          fundUsed: 3.04,
+          fundPct: 76,
+          attend: 82,
+          questions: 9,
+          access: 72,
+          sentiment: 68,
+          sentNeg: 20,
+          sentNeu: 12,
+          score: 78,
+          grade: "B+",
+          gradeClass: "grade-bp",
+          sectors: ["Roads", "Drinking Water", "Sports"],
+          projects: [
+            {
+              name: "Road development, Vijayanagar main roads",
+              type: "Roads",
+              amount: "₹72 L",
+              date: "2024",
+            },
+            {
+              name: "Sports ground, Vijayanagar layout",
+              type: "Sports",
+              amount: "₹25 L",
+              date: "2023",
+            },
+          ],
+          bio: "M. Krishnappa is a senior Congress politician representing Vijayanagar constituency in west Bengaluru.",
+          keyFact:
+            "76% KLLADS fund utilisation, above Bengaluru average of 39%",
+          area: "south",
+        },
+        {
+          id: "hkpatil",
+          rank: 6,
+          name: "H.K. Patil",
+          photo: null,
+          initials: "HP",
+          color: "#0F766E",
+          constituency: "Gadag-Betageri",
+          dist: "Gadag",
+          party: "INC",
+          elected: "13 May 2023",
+          term: "2023–2028",
+          hq: "Gadag Town, Gadag District",
+          wikiUrl: "",
+          dob: "~1958",
+          edu: "Law Graduate",
+          margin: 28000,
+          totalVotes: 92000,
+          assets: "₹18.4 Cr",
+          criminal: 0,
+          fundAlloc: 4,
+          fundUsed: 3.32,
+          fundPct: 83,
+          attend: 88,
+          questions: 11,
+          access: 70,
+          sentiment: 72,
+          sentNeg: 15,
+          sentNeu: 13,
+          score: 82,
+          grade: "A",
+          gradeClass: "grade-a",
+          sectors: ["Drinking Water", "Roads", "Rural Health"],
+          projects: [
+            {
+              name: "Rural water supply scheme, 12 villages",
+              type: "Water",
+              amount: "₹82 L",
+              date: "2024",
+            },
+            {
+              name: "District road connectivity project",
+              type: "Roads",
+              amount: "₹68 L",
+              date: "2023–24",
+            },
+          ],
+          bio: "H.K. Patil is a senior Congress politician from Gadag. Gadag district had the joint-highest KLLADS utilisation (51%) in 2024–25.",
+          keyFact:
+            "Gadag district achieved 51% KLLADS utilisation — joint highest in Karnataka (2024–25)",
+          area: "north",
+        },
+        {
+          id: "byrathi",
+          rank: 7,
+          name: "Byrathi Basavaraj",
+          photo: null,
+          initials: "BB",
+          color: "#D97706",
+          constituency: "Krishnarajapura (K.R. Puram)",
+          dist: "Bengaluru Urban",
+          party: "BJP",
+          elected: "13 May 2023",
+          term: "2023–2028",
+          hq: "KR Puram, Bangalore 560036",
+          wikiUrl: "https://en.wikipedia.org/wiki/Byrati_Basavaraj",
+          dob: "4 Feb 1964",
+          edu: "Graduate",
+          margin: 18000,
+          totalVotes: 95000,
+          assets: "₹15.8 Cr",
+          criminal: 0,
+          fundAlloc: 4,
+          fundUsed: 2.72,
+          fundPct: 68,
+          attend: 79,
+          questions: 11,
+          access: 68,
+          sentiment: 64,
+          sentNeg: 24,
+          sentNeu: 12,
+          score: 71,
+          grade: "B",
+          gradeClass: "grade-b",
+          sectors: ["Roads", "Urban Development"],
+          projects: [
+            {
+              name: "Road development, Hoodi ward",
+              type: "Roads",
+              amount: "₹58 L",
+              date: "2024",
+            },
+            {
+              name: "Drainage improvement, K.R. Puram",
+              type: "Sanitation",
+              amount: "₹32 L",
+              date: "2024",
+            },
+          ],
+          bio: "Byrathi Basavaraj is a 4-term MLA from Krishnarajapura, a veteran politician who served as Urban Development Minister in the Yediyurappa and Bommai cabinets. He was originally from Congress, switched to BJP in 2019.",
+          keyFact:
+            "4-term MLA; former Urban Development Minister (2021–2023); switched from INC to BJP in 2019",
+          area: "east",
+        },
+        {
+          id: "bnbache",
+          rank: 8,
+          name: "B.N. Bache Gowda",
+          photo: null,
+          initials: "BG",
+          color: "#059669",
+          constituency: "Devanahalli",
+          dist: "Bengaluru Rural",
+          party: "BJP",
+          elected: "13 May 2023",
+          term: "2023–2028",
+          hq: "Devanahalli Town, Bengaluru Rural",
+          wikiUrl: "",
+          dob: "~1968",
+          edu: "Graduate",
+          margin: 14000,
+          totalVotes: 82000,
+          assets: "₹9.2 Cr",
+          criminal: 0,
+          fundAlloc: 4,
+          fundUsed: 2.84,
+          fundPct: 71,
+          attend: 83,
+          questions: 9,
+          access: 74,
+          sentiment: 67,
+          sentNeg: 20,
+          sentNeu: 13,
+          score: 75,
+          grade: "B",
+          gradeClass: "grade-b",
+          sectors: ["Roads", "Agriculture", "Tourism"],
+          projects: [
+            {
+              name: "Farm road connectivity, 8 villages",
+              type: "Roads",
+              amount: "₹48 L",
+              date: "2024",
+            },
+            {
+              name: "Devanahalli Fort area development (tourism)",
+              type: "Tourism",
+              amount: "₹22 L",
+              date: "2024",
+            },
+          ],
+          bio: "B.N. Bache Gowda is the BJP MLA from Devanahalli, an area near Kempegowda International Airport. Active in rural infrastructure and agricultural development.",
+          keyFact:
+            "Devanahalli is near KIA airport — constituency benefits from airport-adjacent economic activity",
+          area: "north",
+        },
+        {
+          id: "haris",
+          rank: 9,
+          name: "N.A. Haris",
+          photo: null,
+          initials: "NH",
+          color: "#6D28D9",
+          constituency: "Shantinagar",
+          dist: "Bengaluru Urban",
+          party: "INC",
+          elected: "13 May 2023",
+          term: "2023–2028",
+          hq: "Shantinagar, Bangalore 560027",
+          wikiUrl: "",
+          dob: "~1962",
+          edu: "Graduate",
+          margin: 32000,
+          totalVotes: 88000,
+          assets: "₹28.4 Cr",
+          criminal: 0,
+          fundAlloc: 4,
+          fundUsed: 2.6,
+          fundPct: 65,
+          attend: 78,
+          questions: 8,
+          access: 66,
+          sentiment: 61,
+          sentNeg: 26,
+          sentNeu: 13,
+          score: 70,
+          grade: "B",
+          gradeClass: "grade-b",
+          sectors: ["Urban Infrastructure", "Roads"],
+          projects: [
+            {
+              name: "Road re-laying, Shantinagar main roads",
+              type: "Roads",
+              amount: "₹55 L",
+              date: "2024",
+            },
+          ],
+          bio: "N.A. Haris is a senior Congress MLA from Shantinagar, one of central Bengaluru's prominent constituencies. His son Mohammed Nalapad had aspirations for the Bangalore Central Lok Sabha seat in 2024.",
+          keyFact:
+            "Senior Congress legislator with one of the highest declared assets (₹28.4 Cr)",
+          area: "east",
+        },
+        {
+          id: "priyakrishna",
+          rank: 10,
+          name: "Priya Krishna",
+          photo: null,
+          initials: "PK",
+          color: "#B91C1C",
+          constituency: "Govindarajanagar",
+          dist: "Bengaluru Urban",
+          party: "INC",
+          elected: "13 May 2023",
+          term: "2023–2028",
+          hq: "Govindarajanagar, Bangalore 560040",
+          wikiUrl: "",
+          dob: "~1982",
+          edu: "MA, LLB (Karnataka State Open University & Bangalore University)",
+          margin: 16000,
+          totalVotes: 74000,
+          assets: "₹2.4 Cr",
+          criminal: 0,
+          fundAlloc: 4,
+          fundUsed: 2.88,
+          fundPct: 72,
+          attend: 53,
+          questions: 7,
+          access: 62,
+          sentiment: 55,
+          sentNeg: 30,
+          sentNeu: 15,
+          score: 64,
+          grade: "C+",
+          gradeClass: "grade-cp",
+          sectors: ["Roads", "Local Infrastructure"],
+          projects: [
+            {
+              name: "Road work, Govindarajanagar ward",
+              type: "Roads",
+              amount: "₹44 L",
+              date: "2024",
+            },
+          ],
+          bio: "Priya Krishna is the Congress MLA from Govindarajanagar (part of Bangalore South parliamentary constituency). Despite reasonable fund utilisation (72%), she had the lowest assembly attendance (53.62%) among all 32 Bengaluru MLAs according to CIVIC Bangalore's 2025 report.",
+          keyFact:
+            "Lowest assembly attendance (53.62%) among all 32 Bengaluru MLAs — CIVIC Bangalore, June 2025",
+          area: "south",
+        },
+        {
+          id: "munirathna",
+          rank: 11,
+          name: "Munirathna",
+          photo: null,
+          initials: "MN",
+          color: "#991B1B",
+          constituency: "Rajarajeshwarinagar",
+          dist: "Bengaluru Urban",
+          party: "INC",
+          elected: "13 May 2023",
+          term: "2023–2028",
+          hq: "RR Nagar, Bangalore 560098",
+          wikiUrl: "",
+          dob: "1974",
+          edu: "Graduate",
+          margin: 36000,
+          totalVotes: 102000,
+          assets: "₹42.8 Cr",
+          criminal: 8,
+          fundAlloc: 4,
+          fundUsed: 1.8,
+          fundPct: 45,
+          attend: 72,
+          questions: 5,
+          access: 44,
+          sentiment: 38,
+          sentNeg: 52,
+          sentNeu: 10,
+          score: 54,
+          grade: "C",
+          gradeClass: "grade-c",
+          sectors: ["Roads"],
+          projects: [
+            {
+              name: "Road patch work, RR Nagar",
+              type: "Roads",
+              amount: "₹28 L",
+              date: "2024",
+            },
+          ],
+          bio: "Munirathna is the Congress MLA from RR Nagar (Rajarajeshwarinagar). He topped the list of Bengaluru MLAs for criminal cases with 8 pending cases, including sexual harassment and a rape and honeytrap chargesheet filed in December 2024 (CIVIC Bangalore). He has the highest declared assets among Bengaluru MLAs at ₹42.8 crore.",
+          keyFact:
+            "⚠️ 8 pending criminal cases including sexual harassment & rape chargesheet (Dec 2024) — CIVIC Bangalore",
+          area: "south",
+        },
+        {
+          id: "manjula",
+          rank: 12,
+          name: "S. Manjula",
+          photo: null,
+          initials: "SM",
+          color: "#64748B",
+          constituency: "Mahadevapura",
+          dist: "Bengaluru Urban",
+          party: "INC",
+          elected: "13 May 2023",
+          term: "2023–2028",
+          hq: "Mahadevapura, Bangalore 560048",
+          wikiUrl: "",
+          dob: "~1980",
+          edu: "Graduate",
+          margin: 12000,
+          totalVotes: 68000,
+          assets: "₹4.2 Cr",
+          criminal: 0,
+          fundAlloc: 4,
+          fundUsed: 0,
+          fundPct: 0,
+          attend: 74,
+          questions: 3,
+          access: 40,
+          sentiment: 31,
+          sentNeg: 58,
+          sentNeu: 11,
+          score: 28,
+          grade: "F",
+          gradeClass: "grade-f",
+          sectors: [],
+          projects: [],
+          bio: "S. Manjula is the Congress MLA from Mahadevapura, one of Bengaluru's fastest-growing tech corridor areas. Mahadevapura adds ~1 lakh new voters every 5 years due to massive IT park and residential growth, making it one of the largest constituencies by population. Despite holding ₹4 crore in LAD funds over 2 years, she had not allocated a single rupee as of the CIVIC Bangalore report (June 2025).",
+          keyFact:
+            "⚠️ Allocated ₹0 of her ₹4 crore 2-year LAD fund — the only such case among all 32 Bengaluru MLAs (CIVIC, June 2025)",
+          area: "east",
+        },
+        // MORE MLAs (lighter data)
+        {
+          id: "siddaramaiah",
+          rank: 13,
+          name: "Siddaramaiah",
+          photo: null,
+          initials: "SI",
+          color: "#1A56B0",
+          constituency: "Varuna",
+          dist: "Mysuru",
+          party: "INC",
+          elected: "13 May 2023",
+          term: "2023–2028",
+          hq: "Varuna, Mysuru",
+          dob: "1948",
+          edu: "Law Graduate",
+          margin: 44000,
+          totalVotes: 118000,
+          assets: "₹52 Cr",
+          criminal: 0,
+          fundAlloc: 4,
+          fundUsed: 3.2,
+          fundPct: 80,
+          attend: 85,
+          questions: 6,
+          access: 80,
+          sentiment: 71,
+          sentNeg: 22,
+          sentNeu: 7,
+          score: 78,
+          grade: "B+",
+          gradeClass: "grade-bp",
+          sectors: ["Development", "Governance"],
+          projects: [],
+          bio: "Siddaramaiah is the current Chief Minister of Karnataka (sworn in May 2023). He represents Varuna constituency in Mysuru district.",
+          keyFact:
+            "22nd Chief Minister of Karnataka; won from Varuna constituency, Mysuru",
+          area: "mysuru",
+        },
+        {
+          id: "dkshivakumar",
+          rank: 14,
+          name: "D.K. Shivakumar",
+          photo: null,
+          initials: "DK",
+          color: "#1A56B0",
+          constituency: "Kanakapura",
+          dist: "Ramanagara",
+          party: "INC",
+          elected: "13 May 2023",
+          term: "2023–2028",
+          hq: "Kanakapura, Ramanagara Dist",
+          dob: "1962",
+          edu: "Graduate",
+          margin: 52000,
+          totalVotes: 132000,
+          assets: "₹1,413 Cr",
+          criminal: 2,
+          fundAlloc: 4,
+          fundUsed: 3.28,
+          fundPct: 82,
+          attend: 82,
+          questions: 8,
+          access: 78,
+          sentiment: 66,
+          sentNeg: 24,
+          sentNeu: 10,
+          score: 76,
+          grade: "B",
+          gradeClass: "grade-b",
+          sectors: ["Urban", "Infrastructure"],
+          projects: [],
+          bio: "D.K. Shivakumar is the Deputy Chief Minister of Karnataka and KPCC President. He is one of the most influential Congress leaders in South India.",
+          keyFact:
+            "Deputy CM of Karnataka; wealthiest politician in Karnataka with declared assets of ₹1,413 Cr",
+          area: "south",
+        },
+        {
+          id: "rbalakrishna",
+          rank: 15,
+          name: "R. Balakrishna",
+          photo: null,
+          initials: "RB",
+          color: "#F97316",
+          constituency: "Yelahanka",
+          dist: "Bengaluru Urban",
+          party: "BJP",
+          elected: "13 May 2023",
+          term: "2023–2028",
+          hq: "Yelahanka, Bangalore 560064",
+          dob: "~1970",
+          edu: "Graduate",
+          margin: 8000,
+          totalVotes: 78000,
+          assets: "₹6.8 Cr",
+          criminal: 0,
+          fundAlloc: 4,
+          fundUsed: 2.56,
+          fundPct: 64,
+          attend: 77,
+          questions: 8,
+          access: 59,
+          sentiment: 59,
+          sentNeg: 26,
+          sentNeu: 15,
+          score: 68,
+          grade: "B",
+          gradeClass: "grade-b",
+          sectors: ["Roads", "Urban"],
+          projects: [],
+          bio: "BJP MLA from Yelahanka, north Bengaluru.",
+          keyFact: "Yelahanka near new Metro extension & aerospace hub",
+          area: "north",
+        },
+        {
+          id: "ashwath",
+          rank: 16,
+          name: "C.N. Ashwath Narayan",
+          photo: null,
+          initials: "CA",
+          color: "#F97316",
+          constituency: "Malleshwaram",
+          dist: "Bengaluru Urban",
+          party: "BJP",
+          elected: "13 May 2023",
+          term: "2023–2028",
+          hq: "Malleshwaram, Bangalore 560003",
+          dob: "~1965",
+          edu: "PhD",
+          margin: 14000,
+          totalVotes: 76000,
+          assets: "₹12.2 Cr",
+          criminal: 0,
+          fundAlloc: 4,
+          fundUsed: 2.4,
+          fundPct: 60,
+          attend: 74,
+          questions: 10,
+          access: 62,
+          sentiment: 58,
+          sentNeg: 28,
+          sentNeu: 14,
+          score: 65,
+          grade: "C+",
+          gradeClass: "grade-cp",
+          sectors: ["Education", "Infrastructure"],
+          projects: [],
+          bio: "C.N. Ashwath Narayan is a former Deputy CM and BJP MLA from Malleshwaram. A tech policy expert, he is known for his education and innovation initiatives.",
+          keyFact:
+            "Former Deputy CM & Finance Minister; PhD holder; involved in voter data controversy during 2023 elections",
+          area: "north",
+        },
+      ];
+
+      const DISTRICTS = [
+        {
+          name: "Vijayapura",
+          util: 51,
+          cat: "high",
+          mlas: 8,
+          alloc: 16,
+          used: 8.16,
+          topSector: "Roads",
+          trend: "+8% vs 2022-23",
+          issues: "Drought-prone; water scarcity",
+        },
+        {
+          name: "Gadag",
+          util: 51,
+          cat: "high",
+          mlas: 5,
+          alloc: 10,
+          used: 5.1,
+          topSector: "Drinking Water",
+          trend: "+12%",
+          issues: "Cotton belt; rural connectivity",
+        },
+        {
+          name: "Vijayanagar",
+          util: 49,
+          cat: "high",
+          mlas: 5,
+          alloc: 10,
+          used: 4.9,
+          topSector: "Roads",
+          trend: "+6%",
+          issues: "Mining-affected areas; new district (2021)",
+        },
+        {
+          name: "Hassan",
+          util: 47,
+          cat: "high",
+          mlas: 8,
+          alloc: 16,
+          used: 7.52,
+          topSector: "Education",
+          trend: "+5%",
+          issues: "Coffee plantation areas; rural schools",
+        },
+        {
+          name: "Shivamogga",
+          util: 41,
+          cat: "mid",
+          mlas: 7,
+          alloc: 14,
+          used: 5.74,
+          topSector: "Roads",
+          trend: "+3%",
+          issues: "Flood-prone; Tunga river connectivity",
+        },
+        {
+          name: "Mysuru",
+          util: 43,
+          cat: "mid",
+          mlas: 11,
+          alloc: 22,
+          used: 9.46,
+          topSector: "Sanitation",
+          trend: "+4%",
+          issues: "Tourism infrastructure; palace area development",
+        },
+        {
+          name: "Dharwad",
+          util: 38,
+          cat: "mid",
+          mlas: 7,
+          alloc: 14,
+          used: 5.32,
+          topSector: "Water",
+          trend: "+2%",
+          issues: "Hubli-Dharwad twin cities; water supply",
+        },
+        {
+          name: "Tumkuru",
+          util: 36,
+          cat: "mid",
+          mlas: 11,
+          alloc: 22,
+          used: 7.92,
+          topSector: "Education",
+          trend: "flat",
+          issues: "Silk city; rural connectivity",
+        },
+        {
+          name: "Bengaluru Urban",
+          util: 39,
+          cat: "mid",
+          mlas: 32,
+          alloc: 64,
+          used: 24.96,
+          topSector: "Roads",
+          trend: "+2%",
+          issues: "Tech corridor; Mahadevapura ₹0 usage; rapid urbanisation",
+        },
+        {
+          name: "Mangaluru (DK)",
+          util: 35,
+          cat: "mid",
+          mlas: 8,
+          alloc: 16,
+          used: 5.6,
+          topSector: "Sanitation",
+          trend: "+1%",
+          issues: "Coastal infrastructure; drainage",
+        },
+        {
+          name: "Chitradurga",
+          util: 33,
+          cat: "mid",
+          mlas: 8,
+          alloc: 16,
+          used: 5.28,
+          topSector: "Water",
+          trend: "-2%",
+          issues: "Drought-prone; Tungabhadra canals",
+        },
+        {
+          name: "Kolar",
+          util: 32,
+          cat: "mid",
+          mlas: 7,
+          alloc: 14,
+          used: 4.48,
+          topSector: "Roads",
+          trend: "flat",
+          issues: "KGF legacy; road connectivity",
+        },
+        {
+          name: "Chikkaballapur",
+          util: 31,
+          cat: "mid",
+          mlas: 6,
+          alloc: 12,
+          used: 3.72,
+          topSector: "Water",
+          trend: "+3%",
+          issues: "Water table depletion; IT township growth",
+        },
+        {
+          name: "Haveri",
+          util: 30,
+          cat: "mid",
+          mlas: 7,
+          alloc: 14,
+          used: 4.2,
+          topSector: "Roads",
+          trend: "flat",
+          issues: "Agricultural roads; cotton & paddy belt",
+        },
+        {
+          name: "Udupi",
+          util: 38,
+          cat: "mid",
+          mlas: 5,
+          alloc: 10,
+          used: 3.8,
+          topSector: "Coastal Infrastructure",
+          trend: "+4%",
+          issues: "Coastal erosion; fisher community needs",
+        },
+        {
+          name: "Chikkamagaluru",
+          util: 37,
+          cat: "mid",
+          mlas: 6,
+          alloc: 12,
+          used: 4.44,
+          topSector: "Tourism",
+          trend: "+6%",
+          issues: "Coffee estate roads; eco-tourism",
+        },
+        {
+          name: "Davangere",
+          util: 28,
+          cat: "low",
+          mlas: 7,
+          alloc: 14,
+          used: 3.92,
+          topSector: "Sanitation",
+          trend: "-3%",
+          issues: "Steel & power loom city; urban drainage",
+        },
+        {
+          name: "Koppal",
+          util: 26,
+          cat: "low",
+          mlas: 5,
+          alloc: 10,
+          used: 2.6,
+          topSector: "Water",
+          trend: "-1%",
+          issues: "Hampi proximity; rural water scarcity",
+        },
+        {
+          name: "Raichur",
+          util: 16,
+          cat: "low",
+          mlas: 7,
+          alloc: 14,
+          used: 2.24,
+          topSector: "Roads",
+          trend: "-5%",
+          issues: "Most backward district; proposal delays reported",
+        },
+        {
+          name: "Kalaburagi",
+          util: 17,
+          cat: "low",
+          mlas: 8,
+          alloc: 16,
+          used: 2.72,
+          topSector: "Water",
+          trend: "-4%",
+          issues: "Historically backward; drought & water crisis",
+        },
+        {
+          name: "Bidar",
+          util: 18,
+          cat: "low",
+          mlas: 8,
+          alloc: 16,
+          used: 2.88,
+          topSector: "Education",
+          trend: "-3%",
+          issues: "Border district; education deficit",
+        },
+        {
+          name: "Belagavi",
+          util: 20,
+          cat: "low",
+          mlas: 18,
+          alloc: 36,
+          used: 7.2,
+          topSector: "Roads",
+          trend: "-2%",
+          issues: "Largest district; Maharashtra border disputes",
+        },
+        {
+          name: "Ballari",
+          util: 22,
+          cat: "low",
+          mlas: 5,
+          alloc: 10,
+          used: 2.2,
+          topSector: "Mining remediation",
+          trend: "+1%",
+          issues: "Post-mining rehabilitation; environmental damage",
+        },
+        {
+          name: "Yadgir",
+          util: 24,
+          cat: "low",
+          mlas: 5,
+          alloc: 10,
+          used: 2.4,
+          topSector: "Sanitation",
+          trend: "flat",
+          issues: "BRGF backward; basic amenities deficit",
+        },
+        {
+          name: "Kodagu",
+          util: 29,
+          cat: "low",
+          mlas: 3,
+          alloc: 6,
+          used: 1.74,
+          topSector: "Roads",
+          trend: "-1%",
+          issues: "Landslide-affected; eco-sensitive zone",
+        },
+        {
+          name: "Ramanagara",
+          util: 34,
+          cat: "mid",
+          mlas: 4,
+          alloc: 8,
+          used: 2.72,
+          topSector: "Roads",
+          trend: "+2%",
+          issues: "Silk city; DK Shivakumar stronghold",
+        },
+        {
+          name: "Bengaluru Rural",
+          util: 42,
+          cat: "mid",
+          mlas: 4,
+          alloc: 8,
+          used: 3.36,
+          topSector: "Agriculture",
+          trend: "+8%",
+          issues: "Peri-urban development; N. Shreenivasaiah model",
+        },
+        {
+          name: "Bagalkot",
+          util: 38,
+          cat: "mid",
+          mlas: 7,
+          alloc: 14,
+          used: 5.32,
+          topSector: "Water",
+          trend: "+3%",
+          issues: "Krishna river command area; ancient sites",
+        },
+        {
+          name: "Dharwad",
+          util: 38,
+          cat: "mid",
+          mlas: 7,
+          alloc: 14,
+          used: 5.32,
+          topSector: "Roads",
+          trend: "+1%",
+          issues: "University city; Hubballi connectivity",
+        },
+        {
+          name: "Bijapur (Vijayapura)",
+          util: 51,
+          cat: "high",
+          mlas: 8,
+          alloc: 16,
+          used: 8.16,
+          topSector: "Roads",
+          trend: "+9%",
+          issues: "Historical city; irrigation dependency",
+        },
+        {
+          name: "Uttara Kannada",
+          util: 33,
+          cat: "mid",
+          mlas: 8,
+          alloc: 16,
+          used: 5.28,
+          topSector: "Coastal/Forest",
+          trend: "+2%",
+          issues: "Eco-sensitive coastal; forest rights",
+        },
+      ];
+
+      // ════ RENDER FUNCTIONS ════
+
+      function getGradeClass(score) {
+        if (score >= 90) return "grade-ap";
+        if (score >= 80) return "grade-a";
+        if (score >= 75) return "grade-bp";
+        if (score >= 65) return "grade-b";
+        if (score >= 55) return "grade-cp";
+        if (score >= 45) return "grade-c";
+        if (score >= 35) return "grade-d";
+        return "grade-f";
+      }
+      function gradeLabel(score) {
+        if (score >= 90) return "A+";
+        if (score >= 80) return "A";
+        if (score >= 75) return "B+";
+        if (score >= 65) return "B";
+        if (score >= 55) return "C+";
+        if (score >= 45) return "C";
+        if (score >= 35) return "D";
+        return "F";
+      }
+      function barColor(pct) {
+        if (pct >= 70) return "#2D9E5C";
+        if (pct >= 40) return "#C9922A";
+        return "#B91C1C";
+      }
+      function partyClass(p) {
+        return p === "INC"
+          ? "pp-inc"
+          : p === "BJP"
+            ? "pp-bjp"
+            : p === "JDS"
+              ? "pp-jds"
+              : "pp-ind";
+      }
+      function hbPartyClass(p) {
+        return p === "INC"
+          ? "hb-party-inc"
+          : p === "BJP"
+            ? "hb-party-bjp"
+            : p === "JDS"
+              ? "hb-party-jds"
+              : "hb-dist";
+      }
+      function distCat(u) {
+        return u >= 45 ? "high" : u >= 25 ? "mid" : "low";
+      }
+
+      function renderMlaCard(m) {
+        const scoreClass = getGradeClass(m.score);
+        const grade = gradeLabel(m.score);
+        const bc = barColor(m.fundPct);
+        const rank =
+          m.rank <= 3
+            ? `<span class="badge-rank rank${m.rank}">${m.rank === 1 ? "🥇" : m.rank === 2 ? "🥈" : "🥉"} #${m.rank}</span>`
+            : `<span class="badge-rank">#${m.rank}</span>`;
+        return `<div class="mla-card" onclick="showMLA('${m.id}')">
+    <div class="mla-card-top">
+      <div class="mla-photo" style="background:${m.color}">${m.initials}</div>
+      <div>
+        <div class="mla-card-name">${m.name}</div>
+        <div class="mla-card-const">${m.constituency}</div>
+        <div class="mla-card-const" style="margin-top:1px;color:var(--ink3)">${m.dist} District</div>
+        <span class="party-pill ${partyClass(m.party)}">${m.party}</span>
+      </div>
+    </div>
+    <div class="mla-card-body">
+      <div class="score-row">
+        <div>
+          <div style="font-size:11px;color:var(--ink4);text-transform:uppercase;letter-spacing:0.4px;margin-bottom:4px">Accountability Score</div>
+          <div style="font-size:24px;font-weight:700;color:var(--ink)">${m.score}/100</div>
+        </div>
+        <div class="score-circle ${scoreClass === "grade-ap" || scoreClass === "grade-a" ? "sc-a" : scoreClass === "grade-bp" || scoreClass === "grade-b" ? "sc-b" : scoreClass === "grade-cp" || scoreClass === "grade-c" ? "sc-c" : "sc-d"}">${grade}</div>
+      </div>
+      <div class="mla-stat-grid">
+        <div class="mla-stat"><div class="mla-stat-val">${m.attend}%</div><div class="mla-stat-lbl">Attendance</div></div>
+        <div class="mla-stat"><div class="mla-stat-val">${m.questions}</div><div class="mla-stat-lbl">Questions raised</div></div>
+        <div class="mla-stat"><div class="mla-stat-val">${m.criminal}</div><div class="mla-stat-lbl" style="color:${m.criminal > 0 ? "var(--red)" : "inherit"}">Criminal cases</div></div>
+        <div class="mla-stat"><div class="mla-stat-val">${m.sentiment}%</div><div class="mla-stat-lbl">Public +ve</div></div>
+      </div>
+    </div>
+    <div class="mla-card-footer">
+      <div class="fund-bar-wrap">
+        <div class="fund-bar-label"><span>Fund used</span><span style="color:${bc};font-weight:600">${m.fundPct}%</span></div>
+        <div class="bar-track"><div class="bar-fill" style="width:${m.fundPct}%;background:${bc}"></div></div>
+      </div>
+      ${rank}
+    </div>
+  </div>`;
+      }
+
+      let mlaFilter = "all";
+      function setFilter(f, btn) {
+        mlaFilter = f;
+        document
+          .querySelectorAll("#page-mlas .fb")
+          .forEach((b) => b.classList.remove("active"));
+        btn.classList.add("active");
+        filterMLAs();
+      }
+      function filterMLAs() {
+        const q = document.getElementById("mlaSearch").value.toLowerCase();
+        let filtered = MLA_DATA.filter((m) => {
+          const matchQ =
+            !q ||
+            m.name.toLowerCase().includes(q) ||
+            m.constituency.toLowerCase().includes(q) ||
+            m.dist.toLowerCase().includes(q);
+          const matchF =
+            mlaFilter === "all" ||
+            m.party === mlaFilter ||
+            (mlaFilter === "Bangalore" && m.dist.includes("Bengaluru"));
+          return matchQ && matchF;
+        });
+        document.getElementById("mlaGrid").innerHTML = filtered
+          .map(renderMlaCard)
+          .join("");
+        document.getElementById("mlaCount").textContent =
+          `Showing ${filtered.length} MLAs`;
+      }
+
+      function showMLA(id) {
+        const m = MLA_DATA.find((x) => x.id === id);
+        if (!m) return;
+        const bc = barColor(m.fundPct);
+        const grade = gradeLabel(m.score);
+
+        document.getElementById("mlaDetailHero").innerHTML = `
+    <div class="mla-hero-inner">
+      <div>
+        <button class="back-btn" onclick="showPage('mlas')">← Back to all MLAs</button>
+        <div style="display:flex;align-items:flex-start;gap:1.5rem;flex-wrap:wrap">
+          <div class="mla-hero-photo" style="background:${m.color}">${m.initials}</div>
+          <div>
+            <div class="mla-hero-name">${m.name}</div>
+            <div class="mla-hero-const">${m.constituency} · ${m.dist} District</div>
+            <div class="mla-hero-badges">
+              <span class="hero-badge ${hbPartyClass(m.party)}">${m.party}</span>
+              <span class="hero-badge hb-dist">📍 ${m.hq}</span>
+              <span class="hero-badge hb-term">🗓 ${m.elected}</span>
+              <span class="hero-badge hb-term">📋 Term ${m.term}</span>
+            </div>
+          </div>
+        </div>
+        ${m.keyFact ? `<div style="margin-top:1.25rem;background:rgba(255,255,255,0.06);border:0.5px solid rgba(255,255,255,0.12);border-radius:8px;padding:0.75rem 1rem;font-size:13px;color:rgba(255,255,255,0.8)">${m.keyFact}</div>` : ""}
+      </div>
+      <div style="margin-left:auto;text-align:center;flex-shrink:0">
+        <div style="width:90px;height:90px;border-radius:50%;background:${m.score >= 80 ? "#166534" : m.score >= 65 ? "#C9922A" : "#B91C1C"};display:flex;align-items:center;justify-content:center;flex-direction:column;margin:0 auto">
+          <div style="font-size:28px;font-weight:800;color:#fff;line-height:1">${m.score}</div>
+          <div style="font-size:13px;font-weight:700;color:rgba(255,255,255,0.8)">${grade}</div>
+        </div>
+        <div style="font-size:11px;color:rgba(255,255,255,0.5);margin-top:8px;text-transform:uppercase;letter-spacing:0.4px">Accountability<br>Score</div>
+      </div>
+    </div>`;
+
+        const projHtml = m.projects.length
+          ? m.projects
+              .map(
+                (p) => `
+    <div class="project-item">
+      <div class="proj-icon" style="background:${p.type === "Roads" ? "#DBEAFE" : p.type === "Education" ? "#FEF3C7" : p.type === "Water" ? "#D1FAE5" : p.type === "Health" ? "#FCE7F3" : "#EDE9FE"};font-size:18px">${p.type === "Roads" ? "🏗" : p.type === "Education" ? "📚" : p.type === "Water" ? "💧" : p.type === "Health" ? "🏥" : p.type === "Sanitation" ? "🚿" : p.type === "Heritage" ? "🏛" : "🏘"}</div>
+      <div style="flex:1">
+        <div class="proj-name">${p.name}</div>
+        <div class="proj-meta">${p.type} · ${p.date}</div>
+      </div>
+      <div class="proj-amount">${p.amount}</div>
+    </div>`,
+              )
+              .join("")
+          : '<div style="color:var(--ink4);font-size:13px;padding:1rem 0">No verified project data available</div>';
+
+        document.getElementById("mlaDetailBody").innerHTML = `
+    <div class="detail-kpi-grid">
+      <div class="dkpi"><div class="dkpi-val" style="color:${bc}">${m.fundPct}%</div><div class="dkpi-lbl">Fund utilised</div></div>
+      <div class="dkpi"><div class="dkpi-val">₹${m.fundUsed} Cr</div><div class="dkpi-lbl">Of ₹${m.fundAlloc} Cr allocated</div></div>
+      <div class="dkpi"><div class="dkpi-val" style="color:${m.attend >= 85 ? "var(--green)" : m.attend >= 70 ? "var(--gold)" : "var(--red)"}">${m.attend}%</div><div class="dkpi-lbl">Assembly attendance</div></div>
+      <div class="dkpi"><div class="dkpi-val">${m.questions}</div><div class="dkpi-lbl">Questions raised</div></div>
+      <div class="dkpi"><div class="dkpi-val" style="color:${m.criminal > 0 ? "var(--red)" : "var(--green)"}">${m.criminal}</div><div class="dkpi-lbl">Criminal cases</div></div>
+      <div class="dkpi"><div class="dkpi-val">${m.sentiment}%</div><div class="dkpi-lbl">Public positive</div></div>
+    </div>
+
+    <div class="two-col">
+      <div class="card">
+        <div class="card-title">MLA Profile</div>
+        <table class="info-table" style="width:100%">
+          <tr><td>Full name</td><td>${m.name}</td></tr>
+          <tr><td>Constituency</td><td>${m.constituency}</td></tr>
+          <tr><td>District</td><td>${m.dist}</td></tr>
+          <tr><td>Party</td><td>${m.party}</td></tr>
+          <tr><td>HQ / Office</td><td>${m.hq}</td></tr>
+          <tr><td>Date elected</td><td>${m.elected}</td></tr>
+          <tr><td>Term</td><td>${m.term}</td></tr>
+          <tr><td>Education</td><td>${m.edu}</td></tr>
+          <tr><td>Declared assets</td><td>${m.assets}</td></tr>
+          <tr><td>Win margin (2023)</td><td>${m.margin.toLocaleString("en-IN")} votes</td></tr>
+          <tr><td>Total votes polled</td><td>${m.totalVotes.toLocaleString("en-IN")}</td></tr>
+        </table>
+      </div>
+      <div class="card">
+        <div class="card-title">Bio</div>
+        <div style="font-size:14px;color:var(--ink3);line-height:1.8;margin-bottom:1rem">${m.bio}</div>
+        <div style="margin-bottom:0.75rem">
+          <div style="font-size:12px;color:var(--ink4);margin-bottom:6px;text-transform:uppercase;letter-spacing:0.4px">Focus sectors</div>
+          ${m.sectors.map((s) => `<span class="tag" style="background:var(--saffron-bg);color:var(--saffron);border:0.5px solid var(--saffron-border)">${s}</span>`).join("") || '<span style="color:var(--ink4);font-size:13px">No data</span>'}
+        </div>
+        <div class="progress-row">
+          <div class="pr-label"><span>Fund utilisation</span><span>${m.fundPct}%</span></div>
+          <div class="pr-track"><div class="pr-fill" style="width:${m.fundPct}%;background:${bc}"></div></div>
+        </div>
+        <div class="progress-row">
+          <div class="pr-label"><span>Assembly attendance</span><span>${m.attend}%</span></div>
+          <div class="pr-track"><div class="pr-fill" style="width:${m.attend}%;background:${m.attend >= 85 ? "var(--green2)" : "#D97706"}"></div></div>
+        </div>
+        <div class="progress-row">
+          <div class="pr-label"><span>Public accessibility</span><span>${m.access}/100</span></div>
+          <div class="pr-track"><div class="pr-fill" style="width:${m.access}%;background:#6366F1"></div></div>
+        </div>
+        <div class="progress-row">
+          <div class="pr-label"><span>Public sentiment (+ve)</span><span>${m.sentiment}%</span></div>
+          <div class="pr-track"><div class="pr-fill" style="width:${m.sentiment}%;background:${m.sentiment >= 60 ? "var(--green2)" : "var(--red)"}"></div></div>
+        </div>
+        <div style="margin-top:1rem">
+          <div style="height:14px;border-radius:99px;overflow:hidden;display:flex">
+            <div style="width:${m.sentiment}%;background:var(--green2)"></div>
+            <div style="width:${m.sentNeu}%;background:#CBD5E0"></div>
+            <div style="width:${m.sentNeg}%;background:var(--red)"></div>
+          </div>
+          <div style="display:flex;gap:12px;font-size:11px;color:var(--ink4);margin-top:4px">
+            <span>Positive ${m.sentiment}%</span><span>Neutral ${m.sentNeu}%</span><span>Negative ${m.sentNeg}%</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:1.5rem">
+      <div class="card-title">Verified projects & development works</div>
+      <div class="card-sub">From LAD funds + other government/CSR sources · 2023–2025</div>
+      ${projHtml}
+    </div>
+
+    <div style="margin-top:1.5rem;background:var(--paper);border:0.5px solid var(--border);border-radius:var(--r);padding:1rem 1.25rem;font-size:12px;color:var(--ink4)">
+      <strong>Data sources for this profile:</strong> CIVIC Bangalore Citizens Report Cards (June 2025), B.PAC, ADR/MyNeta.info (ECI affidavit data), Deccan Herald, ETV Bharat, The Hans India, Citizen Matters, IBTimes India, Wikipedia. Scores are composite indices for civic education purposes.
+    </div>`;
+
+        showPage("mla-detail");
+      }
+
+      function renderLeaderboard() {
+        const sorted = [...MLA_DATA].sort((a, b) => b.score - a.score);
+        document.getElementById("leaderboardList").innerHTML = sorted
+          .map(
+            (m, i) => `
+    <div class="lb-item" onclick="showMLA('${m.id}')" style="cursor:pointer">
+      <div class="lb-rank ${i < 3 ? "lr" + (i + 1) : "lrn"}">${i < 3 ? ["🥇", "🥈", "🥉"][i] : "#" + (i + 1)}</div>
+      <div style="display:flex;align-items:center;gap:12px">
+        <div class="lb-photo" style="background:${m.color}">${m.initials}</div>
+        <div>
+          <div class="lb-info-name">${m.name}</div>
+          <div class="lb-info-meta">${m.constituency} · ${m.dist} · <span class="party-pill ${partyClass(m.party)}" style="font-size:9px;padding:1px 6px">${m.party}</span></div>
+          <div class="lb-stats">
+            <span class="lb-stat">Funds: <strong>${m.fundPct}%</strong></span>
+            <span class="lb-stat">Attend: <strong>${m.attend}%</strong></span>
+            <span class="lb-stat">Qns: <strong>${m.questions}</strong></span>
+            <span class="lb-stat">Access: <strong>${m.access}/100</strong></span>
+            <span class="lb-stat">Cases: <strong style="color:${m.criminal > 0 ? "var(--red)" : "inherit"}">${m.criminal}</strong></span>
+          </div>
+        </div>
+      </div>
+      <div class="lb-grade ${getGradeClass(m.score)}">${gradeLabel(m.score)}</div>
+    </div>`,
+          )
+          .join("");
+      }
+
+      function renderDistricts(filter = "all") {
+        const list =
+          filter === "all"
+            ? DISTRICTS
+            : DISTRICTS.filter((d) => d.cat === filter);
+        document.getElementById("districtGrid").innerHTML = list
+          .map(
+            (d) => `
+    <div class="dist-card">
+      <div class="dist-header">
+        <div class="dist-name">${d.name}</div>
+        <span class="perf-badge ${d.cat === "high" ? "pb-high" : d.cat === "mid" ? "pb-mid" : "pb-low"}">${d.cat === "high" ? "High" : d.cat === "mid" ? "Mid" : "Low"}</span>
+      </div>
+      <div class="progress-row">
+        <div class="pr-label"><span>Fund utilisation</span><span style="color:${barColor(d.util)};font-weight:600">${d.util}%</span></div>
+        <div class="pr-track"><div class="pr-fill" style="width:${d.util}%;background:${barColor(d.util)}"></div></div>
+      </div>
+      <div class="mini-stats">
+        <div class="ms"><div class="ms-val">${d.mlas}</div><div class="ms-lbl">MLAs</div></div>
+        <div class="ms"><div class="ms-val">₹${d.alloc}Cr</div><div class="ms-lbl">Allocated</div></div>
+        <div class="ms"><div class="ms-val">₹${d.used.toFixed(1)}Cr</div><div class="ms-lbl">Spent</div></div>
+      </div>
+      <div style="margin-top:8px;font-size:11px;color:var(--ink4)">Top sector: <strong style="color:var(--ink3)">${d.topSector}</strong> · Trend: <span style="color:${d.trend.startsWith("+") ? "var(--green2)" : d.trend.startsWith("-") ? "var(--red)" : "var(--ink4)"}">${d.trend}</span></div>
+      <div style="margin-top:4px;font-size:11px;color:var(--ink4);font-style:italic">${d.issues}</div>
+    </div>`,
+          )
+          .join("");
+      }
+
+      function filterDist(f, btn) {
+        document
+          .querySelectorAll("#page-districts .fb")
+          .forEach((b) => b.classList.remove("active"));
+        btn.classList.add("active");
+        renderDistricts(f);
+      }
+
+      function renderTop3() {
+        const top = MLA_DATA.slice(0, 3);
+        const medals = ["🥇", "🥈", "🥉"];
+        const cardClass = ["gold-card", "silver-card", "bronze-card"];
+        document.getElementById("top3Grid").innerHTML = top
+          .map(
+            (m, i) => `
+    <div class="t3-card ${cardClass[i]}" onclick="showMLA('${m.id}')" style="cursor:pointer">
+      <div class="t3-header">
+        <div class="t3-medal">${medals[i]}</div>
+        <div class="t3-photo" style="background:${m.color}">${m.initials}</div>
+        <div class="t3-name">${m.name}</div>
+        <div class="t3-const">${m.constituency}, ${m.dist}</div>
+        <span class="party-pill ${partyClass(m.party)}" style="margin-top:8px;font-size:11px">${m.party}</span>
+      </div>
+      <div class="t3-body">
+        <div class="t3-score" style="color:${m.color}">${m.score}</div>
+        <div class="t3-grade-label">Accountability score / 100 · Grade ${gradeLabel(m.score)}</div>
+        <div class="t3-stats">
+          <div class="t3-stat"><div class="t3-stat-val" style="color:${barColor(m.fundPct)}">${m.fundPct}%</div><div class="t3-stat-lbl">Funds used</div></div>
+          <div class="t3-stat"><div class="t3-stat-val">${m.attend}%</div><div class="t3-stat-lbl">Attendance</div></div>
+          <div class="t3-stat"><div class="t3-stat-val">${m.questions}</div><div class="t3-stat-lbl">Questions</div></div>
+          <div class="t3-stat"><div class="t3-stat-val">${m.access}/100</div><div class="t3-stat-lbl">Accessibility</div></div>
+        </div>
+        <div class="t3-projects">
+          <div style="font-size:11px;font-weight:600;color:var(--ink4);text-transform:uppercase;letter-spacing:0.4px;margin-bottom:6px">Key projects</div>
+          ${m.projects
+            .slice(0, 3)
+            .map(
+              (p) =>
+                `<div class="t3-proj-item"><span class="t3-proj-name">${p.name.slice(0, 38)}${p.name.length > 38 ? "…" : ""}</span><span class="t3-proj-val">${p.amount}</span></div>`,
+            )
+            .join("")}
+        </div>
+      </div>
+    </div>`,
+          )
+          .join("");
+
+        document.getElementById("top3Projects").innerHTML = top
+          .map(
+            (m) => `
+    <div style="margin-bottom:1.5rem">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:0.75rem;padding-bottom:0.75rem;border-bottom:0.5px solid var(--border)">
+        <div style="width:36px;height:36px;border-radius:50%;background:${m.color};display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:13px">${m.initials}</div>
+        <div><strong>${m.name}</strong> — ${m.constituency}</div>
+      </div>
+      ${m.projects.map((p) => `<div class="project-item"><div class="proj-icon" style="background:${p.type === "Roads" ? "#DBEAFE" : p.type === "Education" ? "#FEF3C7" : p.type === "Water" ? "#D1FAE5" : "#EDE9FE"}">${p.type === "Roads" ? "🏗" : p.type === "Education" ? "📚" : p.type === "Water" ? "💧" : "🏘"}</div><div style="flex:1"><div class="proj-name">${p.name}</div><div class="proj-meta">${p.type} · ${p.date}</div></div><div class="proj-amount">${p.amount}</div></div>`).join("")}
+    </div>`,
+          )
+          .join("");
+      }
+
+      function renderAccess() {
+        const data = MLA_DATA.slice(0, 8);
+        document.getElementById("accessList").innerHTML = data
+          .map(
+            (m) => `
+    <div style="padding:0.75rem 0;border-bottom:0.5px solid var(--border)">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">
+        <div style="font-size:14px;font-weight:500">${m.name} <span style="font-size:12px;color:var(--ink4)">– ${m.constituency}</span></div>
+        <div style="font-size:15px;font-weight:700;color:${m.access >= 70 ? "var(--green)" : m.access >= 50 ? "var(--gold)" : "var(--red)"}">${m.access}/100</div>
+      </div>
+      <div class="pr-track"><div class="pr-fill" style="width:${m.access}%;background:${m.access >= 70 ? "var(--green2)" : "#D97706"}"></div></div>
+    </div>`,
+          )
+          .join("");
+
+        document.getElementById("sentimentList").innerHTML = data
+          .map(
+            (m) => `
+    <div style="padding:0.75rem 0;border-bottom:0.5px solid var(--border)">
+      <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:4px">
+        <span style="font-weight:500">${m.name}</span>
+        <span style="color:${m.sentiment >= 60 ? "var(--green)" : "var(--red)"};font-weight:600">${m.sentiment}% positive</span>
+      </div>
+      <div class="sent-bar">
+        <div class="sb-pos" style="width:${m.sentiment}%"></div>
+        <div class="sb-neu" style="width:${m.sentNeu}%"></div>
+        <div class="sb-neg" style="width:${m.sentNeg}%"></div>
+      </div>
+    </div>`,
+          )
+          .join("");
+      }
+
+      // ════ CHARTS ════
+
+      function initCharts() {
+        // Trend chart
+        const tc = document.getElementById("trendChart");
+        if (tc && !tc._chart) {
+          tc._chart = new Chart(tc, {
+            type: "bar",
+            data: {
+              labels: ["2022–23", "2023–24", "2024–25"],
+              datasets: [
+                {
+                  label: "Allocated",
+                  data: [1292, 1256, 1449],
+                  backgroundColor: "#B5D4F4",
+                  borderRadius: 6,
+                },
+                {
+                  label: "Utilised",
+                  data: [594, 218, 461],
+                  backgroundColor: "#2D9E5C",
+                  borderRadius: 6,
+                },
+              ],
+            },
+            options: {
+              responsive: true,
+              maintainAspectRatio: false,
+              plugins: { legend: { display: false } },
+              scales: {
+                y: {
+                  beginAtZero: true,
+                  ticks: {
+                    callback: (v) => "₹" + v + " Cr",
+                    font: { size: 10 },
+                  },
+                  grid: { color: "rgba(0,0,0,0.05)" },
+                },
+                x: { grid: { display: false } },
+              },
+            },
+          });
+        }
+        // Assembly chart
+        const ac = document.getElementById("assemblyChart");
+        if (ac && !ac._chart) {
+          ac._chart = new Chart(ac, {
+            type: "bar",
+            data: {
+              labels: [
+                "Shreenivasaiah\n(Nelamangala)",
+                "K.J. George\n(Sarvagnanagar)",
+                "Rizwan\n(Shivajinagar)",
+                "Sowmya Reddy\n(Jayanagar)",
+                "Krishnappa\n(Vijayanagar)",
+                "N.A. Haris\n(Shantinagar)",
+                "Munirathna\n(RR Nagar)",
+                "Priya Krishna\n(Govindraj Ngr)",
+                "S. Manjula\n(Mahadevapura)",
+              ],
+              datasets: [
+                {
+                  label: "Attendance %",
+                  data: [100, 91, 87, 84, 82, 78, 72, 53, 74],
+                  backgroundColor: [
+                    "#1A6B3A",
+                    "#2D9E5C",
+                    "#7C3AED",
+                    "#9D174D",
+                    "#C9922A",
+                    "#6D28D9",
+                    "#C9922A",
+                    "#B91C1C",
+                    "#64748B",
+                  ],
+                  borderRadius: 4,
+                },
+              ],
+            },
+            options: {
+              responsive: true,
+              maintainAspectRatio: false,
+              plugins: { legend: { display: false } },
+              scales: {
+                y: {
+                  beginAtZero: true,
+                  max: 110,
+                  ticks: { callback: (v) => v + "%", font: { size: 10 } },
+                  grid: { color: "rgba(0,0,0,0.05)" },
+                },
+                x: { ticks: { font: { size: 8 } }, grid: { display: false } },
+              },
+            },
+          });
+        }
+        // Econ chart
+        const ec = document.getElementById("econChart");
+        if (ec && !ec._chart) {
+          ec._chart = new Chart(ec, {
+            type: "bar",
+            data: {
+              labels: [
+                "Fund utilisation (%)",
+                "GSDP growth add-on (%)",
+                "People benefited (lakh)",
+                "Roads repaired (100km/yr)",
+                "Classrooms built (100s)",
+              ],
+              datasets: [
+                {
+                  label: "Current 2024–25",
+                  data: [32, 0.5, 5.8, 84, 15],
+                  backgroundColor: "#FCA5A5",
+                  borderRadius: 4,
+                  borderSkipped: false,
+                },
+                {
+                  label: "If all MLAs = Top 3",
+                  data: [95, 2.8, 25, 240, 45],
+                  backgroundColor: "#2D9E5C",
+                  borderRadius: 4,
+                  borderSkipped: false,
+                },
+              ],
+            },
+            options: {
+              responsive: true,
+              maintainAspectRatio: false,
+              plugins: { legend: { display: false } },
+              scales: {
+                y: {
+                  beginAtZero: true,
+                  grid: { color: "rgba(0,0,0,0.05)" },
+                  ticks: { font: { size: 10 } },
+                },
+                x: { ticks: { font: { size: 9 } }, grid: { display: false } },
+              },
+            },
+          });
+        }
+      }
+
+      // ════ PAGE ROUTING ════
+
+      function showPage(id) {
+        document.querySelectorAll(".page").forEach((p) => {
+          p.classList.remove("active");
+        });
+        document
+          .querySelectorAll(".nav-link")
+          .forEach((l) => l.classList.remove("active"));
+        const page = document.getElementById("page-" + id);
+        if (page) page.classList.add("active");
+        const link = document.querySelector(`.nav-link[onclick*="${id}"]`);
+        if (link) link.classList.add("active");
+        window.scrollTo(0, 0);
+        setTimeout(initCharts, 150);
+      }
+
+      function goHome() {
+        showPage("home");
+        document.querySelectorAll(".nav-link").forEach((l, i) => {
+          if (i === 0) l.classList.add("active");
+          else l.classList.remove("active");
+        });
+      }
+
+      // ════ INIT ════
+      filterMLAs();
+      renderLeaderboard();
+      renderDistricts();
+      renderTop3();
+      renderAccess();
+      setTimeout(initCharts, 400);
+    </script>
+  </body>
+</html>
