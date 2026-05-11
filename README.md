@@ -15,36 +15,42 @@ An interactive web-based dashboard that provides comprehensive information about
 ## 🎯 Key Features & Coverage
 
 ### 1. **MLA Performance Rankings**
+
 - Comprehensive rankings of all 224 MLAs
 - Multi-factor scoring system
 - Top performers to bottom performers view
 - Party-wise breakdown (INC, BJP, JDS, Independent)
 
 ### 2. **Constituency Development Fund Analysis**
+
 - **Allocated vs Actual Spending**: Track fund utilization across all 224 constituencies
 - District-wise fund distribution patterns
 - Sector-wise impact analysis
 - Visual comparison of planned vs actual expenditure
 
 ### 3. **Real Constituency Impact**
+
 - Documented infrastructure projects completed
 - Sector-wise project breakdown
 - Current utilization rates
 - Potential impact if full fund allocation was used
 
 ### 4. **Public Accessibility & Sentiment**
+
 - MLA public accessibility scores
 - Public sentiment tracker
 - Constituent engagement metrics
 - Office availability and responsiveness data
 
 ### 5. **Economic Potential Model**
+
 - Karnataka economic growth projections
 - Infrastructure development potential
 - Sector-wise economic analysis
 - Regional development opportunities
 
 ### 6. **MLA Profiles**
+
 - Individual MLA detailed profiles
 - Personal background and qualifications
 - Electoral history
@@ -54,20 +60,21 @@ An interactive web-based dashboard that provides comprehensive information about
 
 ## 📈 Key Statistics
 
-| Metric | Value |
-|--------|-------|
-| **Total Constituencies** | 224 |
-| **Election Date** | 13 May 2023 |
-| **Swearing-in Date** | 20 May 2023 |
-| **Data Points Tracked** | 1000+ |
-| **Districts Covered** | 31 |
-| **Data Sources** | 7+ verified sources |
+| Metric                   | Value               |
+| ------------------------ | ------------------- |
+| **Total Constituencies** | 224                 |
+| **Election Date**        | 13 May 2023         |
+| **Swearing-in Date**     | 20 May 2023         |
+| **Data Points Tracked**  | 1000+               |
+| **Districts Covered**    | 31                  |
+| **Data Sources**         | 7+ verified sources |
 
 ---
 
 ## 🔍 What Data Is Covered
 
 ### MLA Information
+
 - ✅ Name, constituency, and party affiliation
 - ✅ Contact information and office details
 - ✅ Educational background
@@ -75,6 +82,7 @@ An interactive web-based dashboard that provides comprehensive information about
 - ✅ Performance metrics
 
 ### Finances & Budgets
+
 - ✅ Fund allocation per constituency
 - ✅ Fund expenditure and utilization rates
 - ✅ Sector-wise spending breakdown
@@ -82,12 +90,14 @@ An interactive web-based dashboard that provides comprehensive information about
 - ✅ Budget vs actual spending analysis
 
 ### Constituency Development
+
 - ✅ Infrastructure projects completed
 - ✅ Sectoral focus (education, healthcare, roads, etc.)
 - ✅ Population served metrics
 - ✅ Development outcomes
 
 ### Public Engagement
+
 - ✅ MLA accessibility ratings
 - ✅ Public sentiment scores
 - ✅ Constituent grievance response rates
@@ -107,7 +117,7 @@ This dashboard aggregates data from trusted, authoritative sources:
 - **Government Records** - Official Karnataka state records
 - **Deccan Herald** - News and verification
 
-*Last Updated: May 2025*
+_Last Updated: May 2025_
 
 ---
 
@@ -125,6 +135,7 @@ This dashboard aggregates data from trusted, authoritative sources:
 ## 💻 Technical Details
 
 **Technology Stack:**
+
 - Pure HTML5
 - CSS3 with custom design system
 - JavaScript (vanilla)
@@ -132,12 +143,14 @@ This dashboard aggregates data from trusted, authoritative sources:
 - Responsive design (mobile & desktop compatible)
 
 **Browser Compatibility:**
+
 - Chrome/Chromium (latest)
 - Firefox (latest)
 - Safari (latest)
 - Edge (latest)
 
 **Performance:**
+
 - No external API dependencies
 - Fast loading (single HTML file)
 - Lightweight and optimized
@@ -148,6 +161,7 @@ This dashboard aggregates data from trusted, authoritative sources:
 ## 📖 Design Philosophy
 
 This dashboard follows principles of:
+
 - **Transparency**: All data is verified and sourced openly
 - **Accessibility**: Clear visualizations for non-technical users
 - **Responsiveness**: Works on all devices
